@@ -1,0 +1,25 @@
+﻿
+@{
+	ViewBag.Title = "Cart";
+}
+
+<h2>Cart</h2>
+
+<div id="cartItemPrototype" style="display: none;" class="cartItem border-bottom m-1 p-2 row">
+	<div class="col-3">
+		<img class="cartItemImage mw-100" />
+	</div>
+	<div class="col-9">
+		<h6 class="cartItemName"></h6>
+		<p>$<span class="cartItemCost"></span></p>
+		<p>Quantity: <span class="cartItemQuantity"></span></p>
+	</div>
+</div>
+
+<div id="cartItemContainer">
+</div>
+<div id="cartItemTotals" style="min-height: 50px;">
+	<p>
+		<span class="float-start">Total:</span><span class="cartItemTotal float-end"></span>
+	</p>
+</div>

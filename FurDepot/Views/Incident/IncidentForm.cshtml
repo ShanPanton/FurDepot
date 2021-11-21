@@ -1,0 +1,85 @@
+﻿@model FurDepot.Models.Incident
+
+@{
+	ViewBag.Title = "Incident Form";
+	Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+@if (!Model.User.IsAuthenticated) {
+	@Html.Partial("NotAuthenticated")
+}
+else {
+	string strHeader = ViewBag.Title;
+	string strText = "Please fill out the form below and click the Submit button to report the incident.";
+	if (Model.UserID == 0) {
+		strHeader = "New Incident Form";
+		strText = "Enter the information below and click the Submit button.";
+	}
+
+
+	<h2>@strHeader</h2>
+	<p>@strText</p>
+	if (Model.ActionType == FurDepot.Models.Incident.ActionTypes.RequiredFieldsMissing) {
+		<div id="content-locked">
+			<i class="fade fa-exclamation-triangle fa-2x"></i>
+			<span>All information below are required.</span><br />
+		</div>
+	}
+
+
+	/*using (Html.BeginForm("IncidentForm", "Incident", FormMethod.Post, new { enctype = "multipart/form-data" }))*/
+	using (Html.BeginForm(FormMethod.Post)) {
+		<input id="query-string-from" name="query-string-from" type="hidden" value="@Request.QueryString["from"]" />
+
+		<div id="user-profile-data">
+			<div class="nav-item">
+				<div>@Html.LabelFor(model => model.UserID, "Your Member ID")</div>
+				<div>@Html.TextBoxFor(model => model.UserID, new { @autofocus = "autofocus", @class = "field-width2" })</div>
+			</div>
+
+			<div class="nav-item">
+				<div>@Html.LabelFor(model => model.UserName, "UserName you want to report about")</div>
+				<div>@Html.TextBoxFor(model => model.UserName)</div>
+			</div>
+
+			<div class="nav-item">
+				<div>@Html.LabelFor(model => model.SubmittedDate, "Today's Date")</div>
+				<div>@Html.TextBoxFor(model => model.SubmittedDate, "{0:MM-DD-YYYY}", new { @class = "field-width3", @type = "date" })</div>
+			</div>
+
+
+			<div class="nav-item">
+				<div>@Html.LabelFor(model => model.IncidentTitle, "Incident Title")</div>
+				<div>@Html.TextBoxFor(model => model.IncidentTitle, new { @class = "field-width1" })</div>
+			</div>
+
+			<div class="nav-item">
+				<div>@Html.LabelFor(model => model.IncidentDesc, "Incident Description")</div>
+				<div>@Html.TextBoxFor(model => model.IncidentDesc, new { @class = "field-width1", @rows = "5" })</div>
+			</div>
+
+			<div class="nav-item">
+				<div>&nbsp;</div>
+				<div>&nbsp;</div>
+			</div>
+
+			<div>
+				<button id="btnSubmit" name="btnSubmit" value="submit" class="button-action"><i class="fa fa-check-square"></i> Submit</button>
+				<button id="btnCancel" name="btnCancel" value="cancel" class="button-action"><i class="fa fa-times"></i> Cancel</button>
+			</div>
+
+
+		</div>
+	}
+
+}
+
+
+<script>
+	$(document).ready(function () {
+		SetActiveMenus('incident', 'incidentform');
+	});
+</script>
+
+
+

@@ -1,0 +1,125 @@
+﻿@model FurDepot.Models.Product
+
+
+@{
+	Layout = "~/Views/Shared/Layout.cshtml";
+	ViewBag.Title = string.Concat("Product: ", @Model.ProductName);
+}
+
+
+
+@if (!Model.User.IsAuthenticated) {
+	@Html.Partial("NotAuthenticated")
+}
+else {
+	string strHeader = ViewBag.Title;
+	string strText = "To make changes to your product enter your information below and click the Update button.";
+	if (Model.ProductID == 0) {
+		strHeader = "New Product";
+		strText = "Enter the information for this product and click the Save button.";
+	}
+
+	<h2>@strHeader</h2>
+	@Html.Partial("UserTabMenu")
+	<p>@strText</p>
+	if (Model.ActionType == FurDepot.Models.Product.ActionTypes.RequiredFieldsMissing) {
+		<div id="content-locked">
+			<i class="fad fa-exclamation-triangle fa-2x"></i>
+			<span>Product title, product description, and etc..are required.</span>
+		</div>
+	}
+
+	//Begin Form
+	using (Html.BeginForm("Product", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" })) {
+		<input id="query-string-from" name="query-string-from" type="hidden" value="@Request.QueryString["from"]" />
+		<div id="user-profile-image">
+			@if (Model.ProductImage != null) {
+				if (Model.ProductImage.ImageID > 0) {
+					<div class="user-profile-image-container">
+						<img class="user-profile-thumbnail" src="@string.Concat("data:Image/",
+							Model.ProductImage.FileExtension, ";base64,",
+							Model.ProductImage.BytesBase64)" />
+					</div>
+				}
+			}
+		</div>
+
+		<div id="user-profile-data">
+			@Html.TextBoxFor(model => model.ProductImage.ImageID, new { style = "display: none;" })
+
+			<div class="">
+				<button class="button-action" id="btnUpdate2" name="btnSubmit" value="save"><i class='far fa-save'></i> Save</button>
+				@if (Model.ProductID > 0) { //don't show the delete unless this event has already been saved to the database
+					<button class="button-cancel" id="btnDelete2" name="btnSubmit" value="delete"><i class='far fa-trash-alt'></i> Delete</button>
+				}
+				<button class="button-cancel" id="btnClose2" name="btnSubmit" value="close"><i class='fa fa-times'></i> Close</button>
+			</div>
+
+			<div class="">
+				<div class="">
+					<div>ProductImage</div>
+					<div>
+						<input class="profile-item" type="file" name="ProductImage" id="ProductImage" />
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="">
+					<div>@Html.LabelFor(model => model.ProductName, "Product Name")</div>
+					<div>@Html.TextBoxFor(model => model.ProductName, new { @autofocus = "autofocus", @class = "field-width2" })</div>
+				</div>
+				<div class="">
+					<div>&nbsp;</div>
+					<div>@Html.CheckBoxFor(model => model.IsActive) @Html.LabelFor(model => model.IsActive, "Is Active")</div>
+				</div>
+			</div>
+
+			<div class="">
+				<!--User will not add date posted; this will show the date posted on the bottom of the product-->
+
+				<div class="">
+					<div>@Html.LabelFor(model => model.DatePost, "Date Post")</div>
+					<div>@Html.TextBoxFor(model => model.DatePost, "{0:yyyy-MM-dd}", new { @class = "field-width3", @type = "date" })</div>
+				</div>
+
+				<div class="">
+					<div>@Html.LabelFor(model => model.DateSold, "Date Sold")</div>
+					<div>@Html.TextBoxFor(model => model.DateSold, "{0:yyyy-MM-dd}", new { @class = "field-width3", @type = "date" })</div>
+				</div>
+
+				<div class="">
+					<div class="">
+						<div>@Html.LabelFor(model => model.ProductCost, "Product Cost")</div>
+						<!--Fixed the formatting issue-->
+						<div>@Html.TextBoxFor(model => model.ProductCost, "{0:0.00}", new { @class = "field-width1", @rows = "4" })</div>
+					</div>
+				</div>
+
+				<div class="">
+					<div class="item">
+						<div>@Html.LabelFor(model => model.ProductDesc, "Product Description")</div>
+						<div>@Html.TextAreaFor(model => model.ProductDesc, new { @class = "field-width1", @rows = "4" })</div>
+					</div>
+				</div>
+
+				<div class="">
+					<button class="button-action" id="btnUpdate" name="btnSubmit" value="save"><i class='far fa-save'></i> Save</button>
+					@if (Model.ProductID > 0) { //don't show the delete unless this event has already been saved to the database
+						<button class="button-cancel" id="btnDelete" name="btnSubmit" value="delete"><i class='far fa-trash-alt'></i> Delete</button>
+					}
+					<button class="button-cancel" id="btnClose" name="btnSubmit" value="close"><i class='fa fa-times'></i> Close</button>
+				</div>
+			</div>
+		</div>
+	}
+}
+
+<script>
+	$(document).ready(function () {
+		SetActiveMenus('profile', 'events');
+	});
+</script>
+
+
+
+

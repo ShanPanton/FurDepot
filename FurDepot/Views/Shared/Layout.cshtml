@@ -1,0 +1,490 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title</title>
+	@Styles.Render("~/Content/css")
+	<script src="https://kit.fontawesome.com/a75ff89abd.js" crossorigin="anonymous"></script>
+	@Scripts.Render("~/bundles/modernizr")
+	@*Added By Shanique 11/18/2021*@
+	<script src="~/Scripts/cart.js" type="module"></script>
+</head>
+<body>
+
+	@{
+
+		FurDepot.Models.User uCurrent = new FurDepot.Models.User();
+		uCurrent = uCurrent.GetUserSession();
+
+	}
+
+
+
+	<div class="container ">
+		<div class="container">
+			<section class="bg-primary2 section">
+				<p class="font1 text-center">#1 Second-Hand Pet Supplies Store</p>
+			</section>
+		</div>
+		<header class="heading">
+
+			<div class="container">
+				<section class="section2">
+					<div class="row">
+						<div class="col  height">
+
+							<div class="div2">
+								<img class="image" src="~/Images/imageedit_42_4827845573 (1).jpg" />
+
+							</div>
+
+
+							<div class="div1 txt">
+
+								<a href="/Home/Index" target="_self">
+									<p class="font2">
+										<span>Fur Depot</span>
+									</p>
+
+								</a>
+
+							</div>
+
+
+							<div class="d-inline-block navbar div3">
+
+								<form class="d-flex">
+									<div class="input-group">
+										<input id="Search-Width" class="form-control Search" type="search" placeholder="Search" aria-label="Search" ">
+
+										<span class="input-group-add">
+											<button type="submit" class="btn btn-primary2 Search-Button"><i class="fas fa-search"></i></button>
+										</span>
+									</div>
+									@*@<button class="btn btn-outline-primary2" type="submit">Search</button>*@
+								</form>
+
+							</div>
+
+							<div class="d-inline-block navbar  div4">
+								<div class="container">
+									<a href="/Home/Index" target="_self"><i class="fas fa-shopping-cart" id="Cart"></i></a>
+
+									@if (uCurrent.IsAuthenticated) { //Already logged in
+
+										<!-- Used a regular dropdown instead of nav drop-->
+										<ul class="list-unstyled me-5">
+
+											<li class="flex-shrink-0 dropdown">
+
+												<!-- Show image-->
+												@if (uCurrent.UserImage != null) {
+													if (uCurrent.UserImage.ImageID > 0) {
+													
+												<img class="round-Image" src="@string.Concat("data:Image/",
+												uCurrent.UserImage.FileExtension, ";base64,",
+												uCurrent.UserImage.BytesBase64)"/>
+												
+												@*<span>@uCurrent.UserName</span>*@
+														
+													}
+												}
+														<ul class="dropdown-menu">
+															<li class="dropdown-item">@Html.ActionLink("My Account", "UpdateProfile", "Profile", new { area = "" }, new { @class = "dropdown-item" })</li>
+															<li class="dropdown-item">@Html.ActionLink("My History", "Shop", "Home", new { area = "" }, new { @class = "dropdown-item" })</li>
+															<li class="dropdown-item">@Html.ActionLink("Forum", "Index", "Forum", new { area = "" }, new { @class = "dropdown-item" })</li>
+
+															<li class="dropdown-divider"></li>
+															<li class="dropdown-item">@Html.ActionLink("Logout", "SignOut", "Profile", new { area = "" }, new { @class = "dropdown-item" })</li>
+
+														</ul>
+
+													</li>
+										</ul>
+
+									}
+									else { // Not logged in
+
+										<button type="button" onclick='window.location.href = "@Url.Action("SignIn", "Profile")"' class="btn  btn-outline-primary2 me-2">Login</button>
+										<button type="button" onclick='window.location.href="@Url.Action("Signup","Profile")"' class="btn btn-primary2">Sign-up</button>
+
+
+									}
+
+
+									@* Hilbert; Discarded; 11/12/2021
+		@if (uCurrent.IsAuthenticated) { //Already logged in
+			<span class="username">@uCurrent.UserName</span>
+			<button type="button" onclick='window.location.href="@Url.Action("Signout","Profile")"' class="btn btn-primary2">Logout</button>
+
+
+
+		}
+		else { // Not logged in
+
+			<button type="button" onclick='window.location.href = "@Url.Action("SignIn", "Profile")"' class="btn  btn-outline-primary2 me-2">Login</button>
+			<button type="button" onclick='window.location.href="@Url.Action("Signup","Profile")"' class="btn btn-primary2">Sign-up</button>
+
+
+		}
+
+									*@
+
+
+
+
+
+								</div>
+							</div>
+						</div>
+
+
+						<!-- Figure out how to fix  line-->
+						<hr />
+
+
+
+
+
+					</div>
+
+				</section>
+
+			</div>
+			<div>
+				<hr id="bottom" />
+			</div>
+			<div class="container">
+
+				<section class="section3  ">
+
+					<nav class="navbar navbar-expand-lg navbar-light menu   ">
+
+						<div class="container-fluid menu">
+							<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+
+							<div class="collapse navbar-collapse " id="navbarSupportedContent">
+
+								<ul class="navbar-nav me-auto mb-2 mb-lg-0 content-menu justify-content-evenly ">
+
+									<li class="nav-item  ">
+										@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+									</li>
+
+									<li class="nav-item">
+										@Html.ActionLink("Shop", "Shop", "Home", new { area = "" }, new { @class = "nav-link  " })
+									</li>
+									
+									<li class="nav-item">
+										@Html.ActionLink("Report", "IncidentForm", "Incident", new { area = "" }, new { @class = "nav-link " })
+									</li>
+									<li class="nav-item">
+										@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link " })
+									</li>
+									<li class="nav-item dropdown">
+
+										@Html.ActionLink("Help", "Help", "Home", new { area = "" }, new { @class = "nav-link dropdown-toggle ", @id = "navbarDropdown", @role = "button", @data_hover = "dropdown", @aria_expanded = "false" })
+
+
+
+										<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+											<li>@Html.ActionLink("FAQ", "FAQ", "Home", new { area = "" }, new { @class = "dropdown-item" })</li>
+											<li>@Html.ActionLink("Shipping & Returns", "Shipping", "Home", new { area = "" }, new { @class = "dropdown-item" })</li>
+											<li>@Html.ActionLink("Store Policy", "StorePolicy", "Home", new { area = "" }, new { @class = "dropdown-item" })</li>
+										</ul>
+									</li>
+								</ul>
+
+
+
+
+							</div>
+
+
+						</div>
+
+
+
+					</nav>
+
+				</section>
+
+
+
+			</div>
+
+		</header>
+
+	</div>
+
+
+	<div class="container body-content">
+		@RenderBody()
+
+		<!-- Figure out how to move this line-->
+
+		<hr />
+	</div>
+	<!--Footer-->
+	<footer class="bg-primary2 text-center text-white footer-height">
+		<!-- Grid container -->
+		<div class="container p-4">
+			<!-- Section: Social media -->
+			@*<section class="mb-4 ">
+					<!-- Facebook -->
+					<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+						<i class="fab fa-facebook-f"></i>
+					</a>
+
+					<!-- Twitter -->
+					<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+						<i class="fab fa-twitter"></i>
+					</a>
+
+					<!-- Google -->
+					<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+						<i class="fab fa-google"></i>
+					</a>
+
+					<!-- Instagram -->
+					<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+						<i class="fab fa-instagram"></i>
+					</a>
+
+					<!-- Linkedin -->
+					<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+						<i class="fab fa-linkedin-in"></i>
+					</a>
+
+					<!-- Github -->
+					<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+						<i class="fab fa-github"></i>
+					</a>
+				</section>*@
+			<!-- Section: Social media -->
+			<!-- Section: Form -->
+			@*<section class="">
+					<form action="">
+						<!--Grid row-->
+						<div class="row d-flex justify-content-center">
+							<!--Grid column-->
+							<div class="col-auto">
+								<p class="pt-2">
+									<strong>Sign up for our newsletter</strong>
+								</p>
+							</div>
+							<!--Grid column-->
+							<!--Grid column-->
+							<div class="col-md-5 col-12">
+								<!-- Email input -->
+								<div class="form-outline form-white mb-4">
+									<input type="email" id="form5Example21" class="form-control" />
+									<label class="form-label" for="form5Example21">Email address</label>
+								</div>
+							</div>
+							<!--Grid column-->
+							<!--Grid column-->
+							<div class="col-auto">
+								<!-- Submit button -->
+								<button type="submit" class="btn btn-outline-light mb-4">
+									Subscribe
+								</button>
+							</div>
+							<!--Grid column-->
+						</div>
+						<!--Grid row-->
+					</form>
+				</section>*@
+
+			<!-- Section: Form -->
+			<!-- Section: Text -->
+			@*<section class="mb-4">
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
+						repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam
+						eum harum corrupti dicta, aliquam sequi voluptate quas.
+					</p>
+				</section>*@
+			<!-- Section: Text -->
+			<!-- Section: Links -->
+			<section>
+				<!--Grid row-->
+				<div class="row">
+					<!--Grid column-->
+					<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
+						<h5 class="text-uppercase">About</h5>
+
+						<ul class="list-unstyled mb-0">
+							<li>
+								@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+						</ul>
+					</div>
+					<!--Grid column-->
+					<!--Grid column-->
+					<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
+						<h5 class="text-uppercase">Sell</h5>
+
+						<ul class="list-unstyled mb-0">
+							<li>
+								@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+						</ul>
+					</div>
+					<!--Grid column-->
+					<!--Grid column-->
+					<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
+						<h5 class="text-uppercase">Help & Contact</h5>
+
+						<ul class="list-unstyled mb-0 ">
+							<li>
+								@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+						</ul>
+					</div>
+					<!--Grid column-->
+					<!--Grid column-->
+					<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
+						<h5 class="text-uppercase">Careers</h5>
+
+						<ul class="list-unstyled mb-0">
+							<li>
+								@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+							<li>
+								@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
+							</li>
+						</ul>
+					</div>
+					<!--Grid column-->
+				</div>
+				<!--Grid row-->
+			</section>
+			<!-- Section: Links -->
+		</div>
+		<!-- Grid container -->
+		<!-- Copyright -->
+		<div class="text-start p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			<divc class="row">
+				<small>&copy; @DateTime.Now.Year Fur Depot</small>
+			</divc>
+			<!-- 11/3/2021; Still need to move on top-->
+			<div class="row-cols-md-1 text-end ">
+				<ul class="list-inline">
+
+					<li class="list-inline-item ">
+						@Html.ActionLink("Terms of service", "Terms", "Home", new { area = "" }, new { @class = "nav-link " })
+					</li>
+
+
+					<li class="list-inline-item">
+						@Html.ActionLink("Store Policy", "StorePolicy", "Home", new { area = "" }, new { @class = "nav-link " })
+					</li>
+
+
+
+
+
+				</ul>
+			</div>
+		</div>
+		<!-- Copyright -->
+	</footer>
+	<!-- Footer -->
+
+
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
+</body>
+</html>
+
+
+
+
+
+
+<!--
+
+
+<div class="container" text-center" style="background-color:blue;">
+	<h2>Getting started</h2>
+
+
+
+
+
+
+
+</div>
+	-->
+<!--
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+
+
+			</button>
+			@@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @@class = "navbar-brand" })
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li>@@Html.ActionLink("Shop", "Shop", "Home")</li>
+				<li>@@Html.ActionLink("Home", "Index", "Home")</li>
+				<li>@@Html.ActionLink("About", "About", "Home")</li>
+				<li>@@Html.ActionLink("Contact", "Contact", "Home")</li>
+			</ul>
+		</div>
+	</div>
+</div>
+	-->
+<!--
+	<div class="text-center text-end">
+								<button type="button" class="btn btn-outline-light me-2">Login</button>
+								<button type="button" class="btn btn-warning">Sign-up</button>
+							</div>
+
+
+
+-->

@@ -1,0 +1,65 @@
+﻿@model FurDepot.Models.User
+
+@{
+	Layout = "~/Views/Shared/Layout.cshtml";
+	ViewBag.Title = "MyProducts";
+}
+
+<style>
+	.user-image-container { height: 225px; }
+
+	.event-thumbnail { margin: 0.25em; }
+
+	.event-link { font-weight: bold; font-size: 0.8em; margin-bottom: 0.3em; }
+
+	.event-date { font-size: 0.8em; margin-bottom: 0.3em; }
+
+	.in-active { background-color: lightgrey; }
+</style>
+
+<h2>@ViewBag.Title</h2>
+@*If false*@
+@if (!Model.IsAuthenticated) {
+	@*Go to NotAuthenticated partial page*@
+	@Html.Partial("NotAuthenticated")
+}
+else {
+	@*Go to UserTabMenu partial page*@
+	@Html.Partial("UserTabMenu")
+	if (Model.Products.Count == 0) {
+		<p>You have no products. Click the <i>Add Product</i> link from the menu above to add a new product.</p>
+	}
+	else {
+		<div>
+			@*Loops thorugh each one of the events*@
+			@foreach (FurDepot.Models.Product p in Model.Products) {
+				<div id="image-@p.ProductID" class="user-image-container @(!p.IsActive ? "in-active":"")">
+					@if (p.ProductImage != null) {
+						<a href="@Url.Action("Product", new { id = p.ProductID })">
+							<img class="user-profile-thumbnail" src="@string.Concat("data:Image/",
+								p.ProductImage.FileExtension, ";base64,",
+								p.ProductImage.BytesBase64)" />
+						</a>
+					}
+
+					<div class="event-thumbnail">
+						<div class="event-link"><a href="@Url.Action("Product", new { id = p.ProductID })">@p.ProductName</a></div>
+								<!--Still need to fix date-->
+							<div class="event-date">@p.DatePost.DayOfWeek @p.DatePost.ToShortDateString()</div>
+							
+						}
+					</div>
+				</div>
+			}
+		</div>
+	}
+}
+
+
+<script>
+	$(document).ready(function () {
+		//then run this function in web2.js
+		SetActiveMenus('profile', 'products');
+	});
+
+</script>

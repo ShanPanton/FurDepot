@@ -1,0 +1,28 @@
+﻿
+<div id="user-tab-menu" class="tab">
+	<button id="profile-products" class="tablinks" onclick="location.href = '@Url.Action("MyProducts", "Profile")';"><i class="fas fa-calendar-alt"></i> My Products</button>
+	@{
+		string strController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+		string strView = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+		long lngID = 0;
+		if (HttpContext.Current.Request.RequestContext.RouteData.Values["id"] != null) {
+			lngID = Convert.ToInt64(HttpContext.Current.Request.RequestContext.RouteData.Values["id"]);
+		}
+	}
+	@if (strController == "Profile" && strView == "MyProducts") {
+		<button id="profile-new-product" class="tablinks" onclick="location.href = '@Url.Action("Product", "Profile")';"><i class="far fa-plus-circle"></i> <span class="full-content" title="Add a new product">Add Product</span><span class="mobile-content" title="Add a new product">Add</span></button>
+
+	}
+
+	@if (strController == "Profile" && strView == "Product" && lngID > 0) {
+		<button id="profile-event-gallery" class="tablinks" onclick="location.href = '@Url.Action("ProductGallery", "Profile", new { @id = lngID })';"><i class="fal fa-images"></i> Product Gallery</button>
+	}
+
+	@if (strController == "Profile" && strView == "ProductGallery" && lngID > 0) {
+		<button id="profile-product" class="tablinks" onclick="location.href = '@Url.Action("Product", "Profile", new { @id = lngID })';"><i class="fas fa-calendar-day"></i> Product</button>
+	}
+
+	<button id="profile-gallery" class="tablinks" onclick="location.href = '@Url.Action("Gallery", "Profile")';"><i class="fal fa-images"></i> Gallery</button>
+	@*<button id="profile-index" class="tablinks" onclick="location.href = '@Url.Action("UpdateProfile", "Profile")';"><i class="fas fa-user-circle"></i> Profile</button>*@
+</div>
+

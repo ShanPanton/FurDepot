@@ -1,0 +1,83 @@
+﻿
+@model FurDepot.Models.User
+@{
+	Layout = "~/Views/Shared/Layout.cshtml";
+
+	ViewBag.Title = "Sign-In";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>Enter your information and click the Sign-In button.</p>
+<!-- An html post; when button is clicked; everything will be posted into the server	-->
+@using (Html.BeginForm(FormMethod.Post)) {
+	<!---If fields are missing-->
+	if (Model.ActionType == FurDepot.Models.User.ActionTypes.RequiredFieldsMissing) {
+		<!--Show message-->
+		<div id="content-locked">
+			<i class="fad fa-exclamation-triangle fa-2x"></i>
+			<span>All fields are required.</span>
+		</div>
+	}
+
+	//If login fails
+	if (Model.ActionType == FurDepot.Models.User.ActionTypes.LoginFailed) {
+		<!--Show message-->
+		<div id="content-locked">
+			<i class="fad fa-exclamation-triangle fa-2x"></i>
+			<span>Invalid UserID and/or Password. Please try again.</span>
+		</div>
+	}
+
+
+
+
+
+	<div class="item">
+		<div>@Html.LabelFor(model => model.UserName)</div>
+		<div>@Html.TextBoxFor(model => model.UserName, new { @autofocus = "autofocus" })</div>
+	</div>
+	<div class="item">
+		<div>@Html.LabelFor(model => model.Password)</div>
+		<div>@Html.TextBoxFor(model => model.Password, new { type = "password" })</div>
+
+	</div>
+
+	<!--Added font color; Hilbert - 11/14/2021-->
+	<div>
+		<button id="btnSignIn" name="btnSubmit" value="signin" class="button-action"><i class="fas fa-sign-in-alt font-color"></i> Sign-In</button>
+	</div>
+}
+
+<script>
+	$(document).ready(function () {
+		SetActiveMenus('signin');
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+	// Wait until jquery is loaded
+	$(document).ready(function () {
+		//then run this function
+		SetActiveMenus('signin'); // make it green; showing the user, that's the active menu that there  on
+	});
+</script>

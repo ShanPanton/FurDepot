@@ -1,0 +1,86 @@
+﻿@model FurDepot.Models.User
+@{
+	// Confirmed with Hilbert put it in 11.12.2021 - Mai
+	Layout = "~/Views/Shared/Layout.cshtml";
+	ViewBag.Title = "My Profile";
+}
+<h2>@ViewBag.Title</h2>
+
+
+@if (!Model.IsAuthenticated) {
+	@Html.Partial("NotAuthenticated")
+}
+else {
+	@*@Html.Partial("UserTabMenu")*@
+	using (Html.BeginForm("UpdateProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" })) {
+		<p>To make changes to your profile enter your information below and click the Update button.</p>
+
+		<div id="user-profile-image">
+			@if (Model.UserImage != null) {
+				if (Model.UserImage.ImageID > 0) {
+					<div class="user-profile-image-container">
+						<img class="user-profile-thumbnail" src="@string.Concat("data:Image/",
+						Model.UserImage.FileExtension, ";base64,",
+						Model.UserImage.BytesBase64)" />
+					</div>
+				}
+			}
+		</div>
+
+		@Html.TextBoxFor(model => model.UserImage.ImageID, new { style = "display: none;" })
+		<div id="user-profile-data">
+
+			<div>User Profile Image</div>
+			<div>
+				<input class="profile-item" type="file" name="UserImage" id="UserImage" />
+			</div>
+
+			<div>User Information</div>
+			<div class="item">
+				<div>@Html.LabelFor(model => model.FirstName, "First Name")</div>
+				<div>@Html.TextBoxFor(model => model.FirstName, new { @autofocus = "autofocus" })</div>
+			</div>
+
+			<div class="item">
+				<div>@Html.LabelFor(model => model.LastName, "Last Name")</div>
+				<div>@Html.TextBoxFor(model => model.LastName)</div>
+			</div>
+
+			<div class="item">
+				<div>@Html.LabelFor(model => model.Email, "Email Address")</div>
+				<div>@Html.TextBoxFor(model => model.Email)</div>
+			</div>
+
+			<div class="item">
+				<div>@Html.LabelFor(model => model.Phone, "Phone")</div>
+				<div>@Html.TextBoxFor(model => model.Phone)</div>
+			</div>
+
+			<div class="item">
+				<div>@Html.LabelFor(model => model.UserName, "UserName")</div>
+				<div>@Html.TextBoxFor(model => model.UserName)</div>
+			</div>
+
+			<div class="item">
+				<div>@Html.LabelFor(model => model.Password, "Password")</div>
+				<div>@Html.TextBoxFor(model => model.Password, new { type = "password" })</div>
+			</div>
+
+			<div class="nav-item">
+				<div>&nbsp;</div>
+			</div>
+
+			<div class="nav-item">
+				<button id="btnUpdate" name="btnSubmit" value="update" class="button-action"><i class='far fa-save'></i> Update</button>
+			</div>
+		</div>
+	}
+}
+
+@*far fa-save*@
+
+<script>
+	$(document).ready(function () {
+		SetActiveMenus('profile', 'updateprofile');
+	});
+</script>

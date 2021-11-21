@@ -1,0 +1,68 @@
+﻿@model FurDepot.Models.User
+@{
+	// Confirmed with Hilbert put it in 11.12.2021 - Mai
+	Layout = "~/Views/Shared/Layout.cshtml";
+
+	ViewBag.Title = "Sign Up";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>Enter your information and click the Sign-Up button to create an account.</p>
+
+@using (Html.BeginForm(FormMethod.Post)) {
+	if (Model.ActionType == FurDepot.Models.User.ActionTypes.DuplicateUserID) {
+		<div id="content-locked">
+			<i class="fad fa-exclamation-triangle fa-2x"></i>
+			<span>That user ID has already been used. To sign-up enter a different user ID.</span>
+		</div>
+	}
+	if (Model.ActionType == FurDepot.Models.User.ActionTypes.DuplicateEmail) {
+		<div id="content-locked">
+			<i class="fad fa-exclamation-triangle fa-2x"></i>
+			<span>That email address has already been used. To sign-up enter a different email address.</span>
+		</div>
+	}
+	if (Model.ActionType == FurDepot.Models.User.ActionTypes.RequiredFieldsMissing) {
+		<div id="content-locked">
+			<i class="fad fa-exclamation-triangle fa-2x"></i>
+			<span>All fields are required.</span>
+		</div>
+	}
+
+	<div class="item">
+		<div>@Html.LabelFor(model => model.FirstName)</div>
+		<div>@Html.TextBoxFor(model => model.FirstName, new { @autofocus = "autofocus" })</div>
+	</div>
+	<div class="item">
+		<div>@Html.LabelFor(model => model.LastName)</div>
+		<div>@Html.TextBoxFor(model => model.LastName)</div>
+	</div>
+	<div class="item">
+		<div>@Html.LabelFor(model => model.Email)</div>
+		<div>@Html.TextBoxFor(model => model.Email)</div>
+	</div>
+	<div class="item">
+		<div>@Html.LabelFor(model => model.Phone)</div>
+		<div>@Html.TextBoxFor(model => model.Phone)</div>
+	</div>
+	<div class="item">
+		<div>@Html.LabelFor(model => model.UserName)</div>
+		<div>@Html.TextBoxFor(model => model.UserName)</div>
+	</div>
+	<div class="item">
+		<div>@Html.LabelFor(model => model.Password)</div>
+		<div>@Html.TextBoxFor(model => model.Password, new { type = "password" })</div>
+	</div>
+	<br />
+
+	<!--Added font color; Hilbert - 11/14/2021-->
+	<div>
+		<button id="btnSignUp" name="btnSubmit" value="signup" class="button-action"><i class="fas fa-user-plus font-color"></i> Sign-Up</button>
+	</div>
+}
+<script>
+	$(document).ready(function () {
+		SetActiveMenus('signup');
+	});
+</script>
+

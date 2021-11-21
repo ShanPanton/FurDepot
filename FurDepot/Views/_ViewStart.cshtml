@@ -1,0 +1,22 @@
+﻿@{
+	string CurrentController = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"]);
+	switch (CurrentController) {
+		case "Home":
+			Layout = "~/Views/Shared/Layout.cshtml";
+			break;
+		case "Payment":
+			// Layout = "~/Views/Shared/Layout_Payment.cshtml";
+			Layout = "~/Views/Shared/Layout.cshtml"; // ToDo use Layout_Payment after it's built
+			break;
+		case "Product":
+			Layout = "~/Views/Shared/Layout.cshtml";
+			break;
+		default:
+			Layout = "~/Views/Shared/Layout_Forum.cshtml";
+			break;
+	}
+}
+
+
+
+

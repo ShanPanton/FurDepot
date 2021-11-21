@@ -1,0 +1,45 @@
+﻿
+@{
+	ViewBag.Title = "ProductDetail";
+}
+
+<h2>@Model.ProductName</h2>
+<div class="">
+	<img class=""
+		 src="@string.Concat("data:Image/",
+			 Model.ProductImage.FileExtension, ";base64,",
+			 Model.ProductImage.BytesBase64)" />
+</div>
+@if (Model.Images != null) {
+	<div class="alternatePRoductImagesContainer">
+		@foreach (var image in Model.Images) {
+		<img class=""
+			 src="@string.Concat("data:Image/",
+			 image.FileExtension, ";base64,",
+			 image.BytesBase64)" />
+		}
+	</div>
+}
+<p>
+	$@Decimal.Round(Model.ProductCost, 2)
+</p>
+<p>
+	@Model.ProductDesc
+</p>
+<button id="addToCart"
+		data-product-id="@Model.ProductID"
+		data-image-file-extension="@Model.ProductImage.FileExtension"
+		data-image-bytes-base-64="@Model.ProductImage.BytesBase64"
+		data-product-name="@Model.ProductName"
+		data-cost="@Model.ProductCost"
+		>
+	Add to Cart
+</button>
+<hr />
+<div class="sellerInfoContainer">
+	<p>
+		Seller:<br />
+		@Model.User.FirstName @Model.User.LastName
+	</p>
+</div>
+

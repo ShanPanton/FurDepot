@@ -1,0 +1,18 @@
+﻿
+@{
+	ViewBag.Title = "Incident has been submitted";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(FormMethod.Post)) {
+	<p>Your incident has been submitted to the site administrator. Thank you very much for helping us improving the Fur Depot operation!</p>
+
+	<button class="button-cancel" id="btnClose" name="btnSubmit" value="close"><i class='fa fa-times'></i> Close</button>
+}
+
+<script>
+	$(document).ready(function () {
+		SetActiveMenus('incident', 'submitted');
+	});
+</script>

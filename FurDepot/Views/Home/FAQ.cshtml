@@ -1,0 +1,70 @@
+﻿
+@{
+	ViewBag.Title = "Frequently Asked Questions";
+}
+
+<style>
+	.accordion {
+		background-color: #eee;
+		color: #444;
+		cursor: pointer;
+		padding: 18px;
+		width: 100%;
+		border: none;
+		text-align: left;
+		outline: none;
+		font-size: 15px;
+		transition: 0.4s;
+	}
+
+	.active, .accordion:hover {
+		background-color: #ccc;
+	}
+
+	.panel {
+		padding: 0 18px;
+		display: none;
+		background-color: white;
+		overflow: hidden;
+	}
+</style>
+
+<h2>@ViewBag.Title</h2>
+
+<button class="accordion">What type of payment do you accept?</button>
+<div class="panel">
+	<p>We have a global coverage of payment. You can use the following credit and debit cards.</p>
+	<p>Visa / Mastercard / American Express / Discover / Diners / Interac / Cartes Bancaires / JCB / China Union Pay</p>
+	<p>Apple Pay / Google Pay / Microsoft Pay / Alipay / WeChat Pay / GrabPay</p>
+	<br />
+	<p>Sorry, prepaid debit cards and gift cards are not accepted.</p>
+</div>
+
+<button class="accordion">How should I decide a price for my product?</button>
+<div class="panel">
+	<p>
+	When you are posting an item for sale, you will be asked to enter an original price you purchased, what category it is, and when it was purchased. We will help to set an ideal price for you to sell your product quickly!.</p>
+</div>
+
+<button class="accordion">How shipping works for sellers?</button>
+<div class="panel">
+	<p>We have a contracted shipping company that lets you send item anywhere in the continental U.S. You can easily create a pre-paid shipping label.</p>
+</div>
+
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>

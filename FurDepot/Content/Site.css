@@ -1,0 +1,440 @@
+﻿body {
+    margin: auto 0px;
+	padding: 0px;
+	min-height:100%;
+
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+/*Override bg-primary*/
+
+.bg-primary2 {
+	background-color: #EE7125;
+}
+
+.heading {
+	position: relative;
+	left: 0px;
+	margin-left: 0px;
+	width: 100%;
+	min-width: 980px;
+	z-index: 50;
+	margin-top:0px;
+	top: -8px;
+	height: 177px;
+	
+}
+
+.top{
+	top:auto;
+
+}
+
+.round-Image {
+	border-radius:50%!important;
+	vertical-align:middle;
+	width: 32px;
+
+    height: 32px;
+
+}
+
+
+
+.structure1 {
+	display: grid;
+	justify-content: center;
+	grid-template-columns: 100%;
+	grid-template-rows: 1fr;
+}
+
+.section {
+	min-width: 980px;
+	position: absolute;
+	margin-left: 0px;
+	top: 0px;
+	height: 23px;
+	left: 0px;
+	width: 100%;
+}
+
+
+
+.font1 {
+	font: normal normal normal 16px/1.4em avenir-lt-w01_85-heavy1475544,avenir-lt-w05_85-heavy,sans-serif;
+	color: #FFFFFF;
+	letter-spacing: 0em;
+
+}
+
+
+.font2 {
+	font: normal normal normal 40px/1.4em poppins-semibold,poppins,sans-serif;
+	line-height: 0.9em;
+	color: #EE7125;
+}
+
+
+.color {
+	color: #EE7125;
+}
+
+
+
+.txt > * {
+	pointer-events: auto;
+}
+
+.txt a {
+	
+	cursor: pointer;
+	text-decoration: none;
+	
+}
+
+.section2 {
+	min-width: 980px;
+	position: absolute;
+	margin-left: 0px;
+	top: 42px;
+	height: 66px;
+	left: 0px;
+	width: 100%;
+}
+
+/*.div1 {
+	visibility: hidden;
+	position: absolute;
+	width: 980px;
+	margin-left: calc((100% - 980px) * 0.5);
+}*/
+
+.height {
+	height: 66px;
+}
+.div1 {
+	left: 65px;
+	width: 260px;
+	position: absolute;
+	min-height: 36px;
+	pointer-events: none;
+	top: 10px;
+}
+
+.div2 {
+	left: 5px;
+	position: absolute;
+	top: 6px;
+	width: 60px;
+	height: 53px;
+}
+
+.image {
+	width: 60px;
+	height: 53px
+}
+
+.div3{
+	direction: ltr;
+    justify-content: flex-end;
+    left: 400px;
+    position: absolute;
+    top: 2px;
+    height: 41px;
+    min-width: 191px;
+    min-height: 40px;
+}
+
+
+.div4 {
+	direction: ltr;
+	justify-content: flex-end;
+	right: 1px;
+	position: absolute;
+	top: 2px;
+	height: 41px;
+	width: 228px;
+	min-width: 191px;
+	min-height: 40px;
+
+}
+
+
+.section3 {
+	min-width: 980px;
+	position: absolute;
+	margin-left: 0px;
+	top: 110px;
+	height: 67px;
+	left: 0px;
+	width: 100%;
+}
+
+
+.menu {
+	left: 100px;
+	width: 980px;
+	position: absolute;
+	top: 10px;
+	height: 45px;
+	overflow-x: visible;
+	margin-left:15px;
+}
+.content-menu {
+	width: 100%;
+	position: absolute;
+	top: -10px;
+	height: 45px;
+	overflow-x: visible;
+	left:-115px;
+	
+}
+
+.masterPage {
+	width: 100%;
+	position: static;
+	top: 0px;
+	height: 100%;
+}
+
+
+.btn-outline-primary2 {
+	color: #EE7125;
+	border-color: #EE7125;
+}
+
+
+.btn-outline-primary2:focus {
+	outline: none;
+	box-shadow: none;
+}
+
+
+.Search:focus {
+	outline: none;
+	border: 1px solid #EE7125;
+	box-shadow: 0 0 10px #EE7125;
+}
+
+#Search-Width {
+	width: 567px;
+}
+.Search-Button:hover {
+	outline: none;
+	border: 1px solid #EE7125;
+	box-shadow: 0 0 10px #EE7125;
+}
+
+.Search-Button:focus {
+	outline: none;
+	border: 1px solid #EE7125;
+	box-shadow: 0 0 10px #EE7125;
+}
+
+
+
+
+.btn-primary2 {
+	background-color: #EE7125;
+}
+
+.btn-primary2:focus {
+	outline: none;
+	box-shadow: none;
+}
+
+
+/*Need to adjust*/
+a {
+	color: black !important;
+	line-height: 2em;
+	font-size:16px;
+}
+
+#Cart{
+
+	color:#EE7125;
+	font-size:25px;
+	margin-left:-25px;
+
+
+}
+
+.none-toggle::after {
+	content: none;
+}
+#bottom {
+	position:absolute;
+	bottom:-13%;
+	text-align:center;
+	height:1px;
+	width: 1140px;
+	left:-10px;
+}
+
+/*
+.navLeftFooter{
+margin-bottom: 0;
+padding-bottom: 0;
+background-color: #232F3E;
+min-width: 1000px;
+position: relative;
+}
+*/
+
+.right{
+
+	float: right;
+}
+
+
+/*
+	.content-menu {
+	width: 75%;
+	position: absolute;
+	top: -10px;
+	height: 45px;
+	overflow-x: visible;
+	left:1px;
+}
+*/
+
+.footer-height{
+height:auto 0px;
+margin-top:-12px;
+
+}
+
+#content-locked { border: 1px solid gray; /* Have round edges*/ -webkit-border-radius: 0.3em; -moz-border-radius: 0.3em; /*---------------------*/ border-radius: 0.3em; background-color: lightyellow; /*Inside; not going to allow anything to get closer to the inside border other than 1em*/ padding: 1em; /*Outside;*/ margin-bottom: 1em; }
+
+#content-locked i { color: red; }
+
+#content-locked span { margin-left: 1em; }
+
+
+
+.font-color { color: #EE7125; }
+#image-drop-container { padding: 2em; margin-top: 1em; background: #EE7125; border: 1px dashed #555; text-align: center; color: #555; width: 400px; }
+.active-drop { /*Dark Green; when dragging over*/ background: #EE7125 !important; border: 1px solid black !important; color: black !important; }
+
+
+.user-image-container { border: 1px solid #ccc;  height: 150px; width: 200px; overflow: hidden; margin-right: 2em; margin-bottom: 2em; position: relative; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); -webkit-border-radius: 0.3em; -moz-border-radius: 0.3em; border-radius: 0.3em; padding: 1em; }
+
+.user-image-container img { width: 175px; max-height: 140px; object-fit: scale-down; }
+
+.user-image-container:hover { border: 1px solid black; background-color: #EE7125 !important; }
+
+.user-image-container:hover .image-delete-button { opacity: 1; }
+
+.image-delete-button { position: absolute; right: 3px; top: 8px; float: right; text-align: center; opacity: 0; transition: opacity .35s ease; background-color: #4CAF50; }
+
+.image-delete-button a { border: 1px solid lightgray; -webkit-border-radius: 0.3em; -moz-border-radius: 0.3em; border-radius: 0.3em; background-color: white; padding: 5px; text-align: center; color: red; z-index: 1; }
+
+
+#user-tab-menu { display: inline-block; margin-bottom: 1em; }
+
+/* Profile Menu */
+.tab { overflow: hidden; border: 1px solid #ccc; background-color: black; display: inline-block; }
+
+/* Style the buttons inside the tab */
+.tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 14px 24px; transition: 0.3s; font-size: 17px; color: white; }
+
+.tab button:hover { background-color: #4b4a4a; }
+
+.tab button.active { /*Green*/ background-color: #4CAF50; }
+
+.tabcontent { display: none; padding: 6px 12px; -webkit-animation: fadeEffect 1s; animation: fadeEffect 1s; }
+
+
+#user-profile-data { display: inline; float: none; }
+
+#user-profile-image { margin-right: 1em; display: inline-block; float: left; }
+
+.user-profile-thumbnail { width: 15em; }
+
+.user-profile-image-container { border: 1px solid gray; -webkit-border-radius: 0.3em; -moz-border-radius: 0.3em; border-radius: 0.3em; padding: 0.4em; margin-right: 1em; margin-bottom: 1em; display: inline-block; }
+
+.productContainer {
+	box-shadow: 0 2px 4px 0 rgb(0 0 0 / 9%), 0 6px 4px 0 rgb(0 0 0 / 5%);
+}
+
+.productContainer:hover {
+	background-color: #ee712542;
+}
+
+/*CSS for Product Detail Page*/
+body {
+	font-family: 'Roboto Condensed', sans-serif;
+	background-color: #f5f5f5
+}
+
+.hedding {
+	font-size: 20px;
+	color: #ab8181;
+}
+
+.main-section {
+	position: absolute;
+	left: 50%;
+	right: 50%;
+	transform: translate(-50%, 5%);
+}
+
+.left-side-product-box img {
+	width: 100%;
+}
+
+.left-side-product-box .sub-img img {
+	margin-top: 5px;
+	width: 83px;
+	height: 100px;
+}
+
+.right-side-pro-detail span {
+	font-size: 15px;
+}
+
+.right-side-pro-detail p {
+	font-size: 25px;
+	color: #a1a1a1;
+}
+
+.right-side-pro-detail .price-pro {
+	color: #E45641;
+}
+
+.right-side-pro-detail .tag-section {
+	font-size: 18px;
+	color: #5D4C46;
+}
+
+.pro-box-section .pro-box img {
+	width: 100%;
+	height: 200px;
+}
+
+@media (min-width:360px) and (max-width:640px) {
+	.pro-box-section .pro-box img {
+		height: auto;
+	}
+}

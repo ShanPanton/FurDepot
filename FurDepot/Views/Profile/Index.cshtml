@@ -1,0 +1,76 @@
+﻿@model FurDepot.Models.User
+@{
+	//Dashborad Added By Shanique 11/18/2021
+	Layout = "~/Views/Shared/Layout.cshtml";
+	ViewBag.Title = "My Account Information";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<!-- If they're not authenticated--->
+<!-- If false-->
+@if (!Model.IsAuthenticated) {
+	<!-- Take to the notAuthenticated page-->
+	@Html.Partial("NotAuthenticated")
+}
+else {
+
+<div class="row">
+	<a class="row col p-1 m-2 border rounded text-decoration-none" href="@Url.Action("UpdateProfile","Profile")">
+		<div class="col-3">
+			<img title="Edit Profile" alt="placeholder title" src="https://randomuser.me/api/portraits/lego/1.jpg" class="col-1 w-100" />
+		</div>
+		<div class="col-9">
+			<h6>Edit Profile</h6>
+			<p>Edit personal info and login credentials</p>
+		</div>
+	</a>
+	<a class="row col p-1 m-2 border rounded text-decoration-none" href="@Url.Action("MyProducts","Profile")">
+		<div class="col-3">
+			<img title="My Listings For Sale" alt="For Sale Icon" src="https://upload.wikimedia.org/wikipedia/commons/9/9d/For_Sale_by_Owner_Sign.svg" class="col-1 w-100" />
+		</div>
+		<div class="col-9">
+			<h6>My Products</h6>
+			<p> Look at current items listed for sale</p>
+		</div>
+	</a>
+	<a class="row col p-1 m-2 border rounded text-decoration-none" href="@Url.Action("Cart","Payment")">
+		<div class="col-3">
+			<img title="Orders In Cart" alt="Image of Cart" src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Circle-icons-cart.svg" class="col-1 w-100" />
+		</div>
+		<div class="col-9">
+			<h6>My Cart</h6>
+			<p> Look at items in Cart</p>
+		</div>
+	</a>
+</div>
+<div class="row">
+	<a class="row col p-1 m-2 border rounded text-decoration-none" href="placeolder route">
+		<div class="col-3">
+			<img title="Payment Information" alt="Currency Image" src="https://upload.wikimedia.org/wikipedia/commons/6/60/Circle-icons-money.svg" class="col-1  w-100" />
+		</div>
+		<div class="col-9">
+			<h6>My Payment Information</h6>
+			<p>Edit Payment Information</p>
+		</div>
+	</a>
+	<a class="row col p-1 m-2 border rounded text-decoration-none" href="placeolder route">
+		<div class="col-3">
+			<img title="Edit Home information" alt="Address Image" src="https://upload.wikimedia.org/wikipedia/commons/3/30/Home_free_icon.svg" class="col-1  w-100" />
+		</div>
+		<div class="col-9">
+			<h6>My Address</h6>
+			<p>Edit Address Information</p>
+		</div>
+	</a>
+</div>
+
+}
+
+<script>
+	//Wait until jquery is load
+	$(document).ready(function () {
+		//then run this function in web2.js
+		SetActiveMenus('profile', 'index');
+	});
+</script>
