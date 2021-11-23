@@ -4,13 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Bogus.import.something;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace FurDepot.Controllers
 {
     public class ProfileController : Controller
     {
 		
+
+
         // GET: Profile; User Account HomePage
         public ActionResult Index() {
 			Models.User u = new Models.User();
@@ -38,6 +41,7 @@ namespace FurDepot.Controllers
 			return View(u);
 		}
 
+
 		[HttpPost]
 		public ActionResult SignUp(FormCollection col) {
 			try {
@@ -58,6 +62,33 @@ namespace FurDepot.Controllers
 					if (col["btnSubmit"] == "signup") { //sign up button pressed
 						Models.User.ActionTypes at = Models.User.ActionTypes.NoType;
 						at = u.Save();
+
+						// ***************************************************************************************************
+						// After saved the user information, sending an email notification using Gmail SMTP - Added on 11.15 - Mai
+						// ***************************************************************************************************
+						using (var client = new SmtpClient()) {
+							client.Connect("smtp.gmail.com");
+							client.Authenticate("furdepottest2021@gmail.com", "theateam2021");
+
+							var bodyBuilder = new BodyBuilder {
+								HtmlBody = $"<p>Thank you for joining the Fur Depot, {u.FirstName}!</p> <p>&nbsp;</p> <p>Here is your username and password:</p> <p>&nbsp;&nbsp;Username: {u.UserName}</p> <p>&nbsp;&nbsp;Password: {u.Password}</p> <p>Enjoy the second-hand experience with the Fur Depot!</p>",
+								TextBody = "{u.FirstName} \r\n {u.UserName} \r\n {u.Password}"
+							};
+
+							var message = new MimeMessage {
+								Body = bodyBuilder.ToMessageBody()
+							};
+							message.From.Add(new MailboxAddress("Noreply from The Fur Depot", "furdepottest2021@gmail.com"));
+							message.To.Add(new MailboxAddress("New Fur Depot Family!", u.Email));
+							message.Bcc.Add(new MailboxAddress("Admin Copy", "furdepottest2021@gmail.com"));
+							message.Subject = "Welcome to the Fur Depot!";
+							client.Send(message);
+
+							client.Disconnect(true);
+						}
+						// **********************************************************************************
+
+
 						switch (at) {
 							case Models.User.ActionTypes.InsertSuccessful:
 								u.SaveUserSession();
@@ -79,6 +110,12 @@ namespace FurDepot.Controllers
 			}
 		}
 
+
+
+
+
+
+
 		public ActionResult SignOut() {
 			Models.User u = new Models.User();
 			u.RemoveUserSession();
@@ -86,41 +123,48 @@ namespace FurDepot.Controllers
 
 		}
 
+
+
 		//Addded 11/1/2021 - Hilbert 
 		public ActionResult SignIn() {
 			Models.User u = new Models.User();
 			return View(u);
 		}
 
+
+
 		[HttpPost]
 		public ActionResult SignIn(FormCollection col) {
 			try {
 				Models.User u = new Models.User();
+
 				u.UserName = col["UserName"];
 				u.Password = col["Password"];
-				//If empty
+
 				if (u.UserName.Length == 0 || u.Password.Length == 0) {
-					//Return a message back to the user
 					u.ActionType = Models.User.ActionTypes.RequiredFieldsMissing;
 					return View(u);
 				}
 				else {
-
 					if (col["btnSubmit"] == "signin") {
+						u.UserName = col["UserName"];
+						u.Password = col["Password"];
 
 						u = u.Login();
 						if (u != null && u.UserID > 0) {
 							u.SaveUserSession();
-							return RedirectToAction("Index");
+							return RedirectToAction("Index", "Home");
 						}
 						else {
 							u = new Models.User();
 							u.UserName = col["UserName"];
 							u.ActionType = Models.User.ActionTypes.LoginFailed;
+							return View(u);
 						}
 					}
-					return View(u);
-
+					else {
+						return View(u);
+					}
 				}
 			}
 			catch (Exception) {
@@ -169,6 +213,33 @@ namespace FurDepot.Controllers
 						u.UserImage = new Models.Image();
 						u.UserImage.ImageID = System.Convert.ToInt32(col["UserImage.ImageID"]);
 
+
+						// ************************************************************************************************************
+						// After saved the user information, sending an email notification using Gmail SMTP - Added on 11.15 - Mai
+						// ************************************************************************************************************
+						using (var client = new SmtpClient()) {
+							client.Connect("smtp.gmail.com");
+							client.Authenticate("furdepottest2021@gmail.com", "theateam2021");
+
+							var bodyBuilder = new BodyBuilder {
+								HtmlBody = $"<p>You have successfully updated your account information.</p> <p>Here is your current profile information:</p> <p>&nbsp;&nbsp;Full Name: {u.FirstName}&nbsp;{u.LastName}</p> <p>&nbsp;&nbsp;Email: {u.Email}</p> <p>&nbsp;&nbsp;Phone: {u.Phone}</p> <p>&nbsp;&nbsp;Username: {u.UserName}</p> <p>&nbsp;&nbsp;Password: {u.Password}</p> <p>&nbsp;</p> <p>Thank you for using the Fur Depot!</p>",
+								TextBody = "{u.FirstName} {u.LastName}\r\n {u.Email} \r\n {u.Phone} \r\n {u.UserName} \r\n {u.Password}"
+							};
+
+							var message = new MimeMessage {
+								Body = bodyBuilder.ToMessageBody()
+							};
+							message.From.Add(new MailboxAddress("Noreply from The Fur Depot", "furdepottest2021@gmail.com"));
+							message.To.Add(new MailboxAddress("The Fur Depot Family!", u.Email));
+							message.Bcc.Add(new MailboxAddress("Admin Copy", "furdepottest2021@gmail.com"));
+							message.Subject = "The Fur Depot: Your account information has been updated!";
+							client.Send(message);
+
+							client.Disconnect(true);
+						}
+						// **********************************************************************************
+
+
 						if (UserImage != null) {
 							u.UserImage = new Models.Image();
 							u.UserImage.ImageID = Convert.ToInt32(col["UserImage.ImageID"]);
@@ -195,6 +266,7 @@ namespace FurDepot.Controllers
 			}
 
 		}
+
 		// Product Gallery
 		public ActionResult Gallery() {
 			Models.User u = new Models.User();
@@ -228,6 +300,7 @@ namespace FurDepot.Controllers
 													  //We can set them earlier; this is what affects the start date and end date
 					p.DatePost = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 					p.DateSold = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+					p.PurchaseDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 				}
 				else {
 					int id = Convert.ToInt32(RouteData.Values["id"]);
@@ -235,6 +308,12 @@ namespace FurDepot.Controllers
 
 				}
 
+
+
+				
+					
+			
+				
 			}
 			return View(p);
 		}
@@ -273,6 +352,8 @@ namespace FurDepot.Controllers
 				p.DatePost = DateTime.Parse(string.Concat(col["DatePost"].ToString()," ", col["DatePost.TimeOfDay"]));
 
 				p.DateSold = DateTime.Parse(string.Concat(col["DateSold"].ToString()," ", col["DatePost.TimeOfDay"]));
+
+				p.PurchaseDate = DateTime.Parse(string.Concat(col["PurchaseDate"].ToString(), " ", col["PurchaseDate.TimeOfDay"]));
 
 				p.ProductCost = Decimal.Parse(string.Concat(col["ProductCost"].ToString()));
 					
@@ -325,13 +406,13 @@ namespace FurDepot.Controllers
 
 		}
 
-
+		//Change ID into ProductID; naming so it can be more consistent
 		[HttpPost]
-		public JsonResult DeleteProductImage (int UserID, int ID) {
+		public JsonResult DeleteProductImage (int UserID, int ProductID) {
 			try {
 				string type = string.Empty;
 				Models.Database db = new Models.Database();
-				if (db.DeleteProductImage(ID)) return Json(new { Status = 1 });
+				if (db.DeleteProductImage(ProductID)) return Json(new { Status = 1 });
 				return Json(new { Status = 0 });
 			}
 			catch(Exception ex) {
