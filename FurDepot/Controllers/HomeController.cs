@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace FurDepot.Controllers {
 	public class HomeController : Controller {
-
+		//Git Test
 
 		// GET: Home
 		public ActionResult Index() {
