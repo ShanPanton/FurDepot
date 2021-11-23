@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace FurDepot.Models {
-	public class ProductContent {
+namespace FurDepot.Models
+{
+	public class ProductContent
+	{ 
 		public Product Product;
 		public User User;
 
-		public bool CurrentUserIsOwner {
+		public bool CurrentUserIsOwner
+		{
 
 			get {
 				if (Product == null) return false;
@@ -18,6 +21,6 @@ namespace FurDepot.Models {
 				return true;
 			}
 		}
-
+	
 	}
 }

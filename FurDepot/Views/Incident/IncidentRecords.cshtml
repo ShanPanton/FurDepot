@@ -1,0 +1,68 @@
+﻿@model FurDepot.Models.DisplayIncidents
+
+@{
+	// Confirmed with Hilbert put it in 11.12.2021 - Mai
+	Layout = "~/Views/Shared/Layout.cshtml";
+
+	ViewBag.Title = "Incident Records";
+
+	string[] TableHeaders = new string[] { "Incident ID"
+,"Your UserName"
+, "First Name"
+, "Last Name"
+, "Incident Title"
+, "UserName You Reported"
+, "Description"
+, "Submitted Date"
+, "Resolved"};
+
+}
+
+
+	<h3>@ViewBag.Title</h3>
+	<div class="table">
+		@if (Model.incidentinfo != null) 
+		{
+			if (Model.incidentinfo.Count > 0) 
+			{
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							@{
+								foreach (var head in TableHeaders) 
+								{
+									<th>@head</th>
+								}
+
+							}
+						</tr>
+					</thead>
+					@foreach (var item in Model.incidentinfo) 
+					{
+						<tr>
+							<td>@Html.DisplayFor(model => item.IncidentID)</td>
+							<td>@Html.DisplayFor(model => item.OwnerUserName)</td>
+							<td>@Html.DisplayFor(model => item.FirstName)</td>
+							<td>@Html.DisplayFor(model => item.LastName)</td>
+							<td>@Html.DisplayFor(model => item.IncidentTitle)</td>
+							<td>@Html.DisplayFor(model => item.UserName)</td>
+							<td>@Html.DisplayFor(model => item.IncidentDesc)</td>
+							<td>@Html.DisplayFor(model => item.SubmittedDate)</td>
+							<td>@Html.DisplayFor(model => item.Resolved)</td>
+						</tr>
+					}
+				</table>
+            }
+        }
+        else
+        {
+			<h3>You do not currently have any incident records.</h3>
+        }
+	</div>
+
+
+<script>
+	$(document).ready(function () {
+		SetActiveMenus('incident', 'incidentrecords');
+	});
+</script>

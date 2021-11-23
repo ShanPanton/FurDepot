@@ -3,21 +3,27 @@
 }
 
 <div class="container mt-5">
-
-</div>
-
-<div id="homeProductsContainer" class="container">
 	<div class="row">
-		@foreach (var p in Model.Products) {
-		<a class="productContainer row col p-1 m-2 border rounded text-decoration-none" href="@Url.Action("ProductDetail","Product",new { productId = p.ProductID })">
-			<p class="productName">@p.ProductName</p>
-			<div class="productImageContainer">
-				<img class="productImage mw-100" src="@string.Concat("data:Image/",
-					p.ProductImage.FileExtension, ";base64,",
-					p.ProductImage.BytesBase64)" />
-			</div>
-			<p class="productCost">$@Decimal.Round(p.ProductCost, 2)</p>
-		</a>
-		}
+		<div class="col-sm-4 ">
+			<h3>Column 1</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+			<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+		</div>
+		<div class="col-sm-4">
+			<h3>Column 2</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+			<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+		</div>
+		<div class="col-sm-4">
+			<h3>Column 3</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+			<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+		</div>
 	</div>
 </div>
+
+<script>
+	$(document).ready(function () {
+		SetActiveMenus('index');
+	});
+</script>

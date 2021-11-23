@@ -7,8 +7,22 @@
 	@Styles.Render("~/Content/css")
 	<script src="https://kit.fontawesome.com/a75ff89abd.js" crossorigin="anonymous"></script>
 	@Scripts.Render("~/bundles/modernizr")
-	@*Added By Shanique 11/18/2021*@
-	<script src="~/Scripts/cart.js" type="module"></script>
+
+	<!-- Adde by Mai on 11.14.2021 for the dropdown list functionality for Help and Profile -->
+	<style>
+		.navbar a:hover, .dropdown:hover .dropbtn {
+			background-color: darkorange;
+		}
+
+		.dropdown-menu a:hover {
+			background-color: #ddd;
+		}
+
+		.dropdown:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+
 </head>
 <body>
 
@@ -42,7 +56,9 @@
 
 							<div class="div1 txt">
 
-								<a href="/Home/Index" target="_self">
+
+								<!-- Updated from /Home/Index to URL on 11.19. - Mai <a href="/Home/Index" target="_self"> -->
+								<a href="http://itd1.cincinnatistate.edu/CPDM-GroupA/">
 									<p class="font2">
 										<span>Fur Depot</span>
 									</p>
@@ -56,7 +72,7 @@
 
 								<form class="d-flex">
 									<div class="input-group">
-										<input id="Search-Width" class="form-control Search" type="search" placeholder="Search" aria-label="Search" ">
+										<input id="Search-Width" class="form-control Search" type="search" placeholder="Search" aria-label="Search">
 
 										<span class="input-group-add">
 											<button type="submit" class="btn btn-primary2 Search-Button"><i class="fas fa-search"></i></button>
@@ -64,76 +80,36 @@
 									</div>
 									@*@<button class="btn btn-outline-primary2" type="submit">Search</button>*@
 								</form>
-
 							</div>
 
 							<div class="d-inline-block navbar  div4">
 								<div class="container">
-									<a href="/Home/Index" target="_self"><i class="fas fa-shopping-cart" id="Cart"></i></a>
 
-									@if (uCurrent.IsAuthenticated) { //Already logged in
 
-										<!-- Used a regular dropdown instead of nav drop-->
-										<ul class="list-unstyled me-5">
+									<!-- **************************************************************** -->
+									<!-- Need to figure out once the buying is settled down - 11.14 - Mai -->
+									<!-- **************************************************************** -->
+									@*<a href="/Home/Index" target="_self"><i class="fas fa-shopping-cart" id="Cart"></i></a>*@
 
-											<li class="flex-shrink-0 dropdown">
+									@if (uCurrent.IsAuthenticated) { //logged in
 
-												<!-- Show image-->
-												@if (uCurrent.UserImage != null) {
-													if (uCurrent.UserImage.ImageID > 0) {
-													
-												<img class="round-Image" src="@string.Concat("data:Image/",
-												uCurrent.UserImage.FileExtension, ";base64,",
-												uCurrent.UserImage.BytesBase64)"/>
-												
-												@*<span>@uCurrent.UserName</span>*@
-														
-													}
-												}
-														<ul class="dropdown-menu">
-															<li class="dropdown-item">@Html.ActionLink("My Account", "UpdateProfile", "Profile", new { area = "" }, new { @class = "dropdown-item" })</li>
-															<li class="dropdown-item">@Html.ActionLink("My History", "Shop", "Home", new { area = "" }, new { @class = "dropdown-item" })</li>
-															<li class="dropdown-item">@Html.ActionLink("Forum", "Index", "Forum", new { area = "" }, new { @class = "dropdown-item" })</li>
-
-															<li class="dropdown-divider"></li>
-															<li class="dropdown-item">@Html.ActionLink("Logout", "SignOut", "Profile", new { area = "" }, new { @class = "dropdown-item" })</li>
-
-														</ul>
-
-													</li>
+										<ul style="list-style-type: none;">
+											<li class="dropdown">
+												<button type="button" class="btn  btn-outline-primary2 me-2" onclick="location.href='@Url.Action("Index", "Profile")'">Hello, @uCurrent.UserName</button>
+												<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+													<li>@Html.ActionLink("My Dashboard", "Index", "Profile", new { area = "" }, new { @class = "dropdown-item" })</li>
+													<li>@Html.ActionLink("Update Profile", "UpdateProfile", "Profile", new { area = "" }, new { @class = "dropdown-item" })</li>
+													<!-- Changed the link page for MyTransactions on 11.17 - Mai -->
+													<li>@Html.ActionLink("Incident Records Test", "IncidentRecords", "Incident", new { area = "" }, new { @class = "dropdown-item" })</li>
+													<li>@Html.ActionLink("Sign out", "SignOut", "Profile", new { area = "" }, new { @class = "dropdown-item" })</li>
+												</ul>
+											</li>
 										</ul>
-
 									}
-									else { // Not logged in
-
-										<button type="button" onclick='window.location.href = "@Url.Action("SignIn", "Profile")"' class="btn  btn-outline-primary2 me-2">Login</button>
-										<button type="button" onclick='window.location.href="@Url.Action("Signup","Profile")"' class="btn btn-primary2">Sign-up</button>
-
-
+									else { // not logged in
+										<button type="button" class="btn  btn-outline-primary2 me-2" onclick="location.href='@Url.Action("Signin","Profile")'">Login</button>
+										<button type="button" class="btn btn-primary2" onclick="location.href='@Url.Action("Signup","Profile")'">Sign-up</button>
 									}
-
-
-									@* Hilbert; Discarded; 11/12/2021
-		@if (uCurrent.IsAuthenticated) { //Already logged in
-			<span class="username">@uCurrent.UserName</span>
-			<button type="button" onclick='window.location.href="@Url.Action("Signout","Profile")"' class="btn btn-primary2">Logout</button>
-
-
-
-		}
-		else { // Not logged in
-
-			<button type="button" onclick='window.location.href = "@Url.Action("SignIn", "Profile")"' class="btn  btn-outline-primary2 me-2">Login</button>
-			<button type="button" onclick='window.location.href="@Url.Action("Signup","Profile")"' class="btn btn-primary2">Sign-up</button>
-
-
-		}
-
-									*@
-
-
-
-
 
 								</div>
 							</div>
@@ -142,10 +118,6 @@
 
 						<!-- Figure out how to fix  line-->
 						<hr />
-
-
-
-
 
 					</div>
 
@@ -175,11 +147,14 @@
 									</li>
 
 									<li class="nav-item">
-										@Html.ActionLink("Shop", "Shop", "Home", new { area = "" }, new { @class = "nav-link  " })
+										@Html.ActionLink("Shop", "Product", "Home", new { area = "" }, new { @class = "nav-link  " })
 									</li>
-									
+									<!-- In the meeting on 11.13, the team decided to not to process forum for now. - Mai -->
+									@*<li class="nav-item">
+										@Html.ActionLink("Forum", "Index", "Forum", new { area = "" }, new { @class = "nav-link " })
+									</li>*@
 									<li class="nav-item">
-										@Html.ActionLink("Report", "IncidentForm", "Incident", new { area = "" }, new { @class = "nav-link " })
+										@Html.ActionLink("Incident", "IncidentForm", "Incident", new { area = "" }, new { @class = "nav-link " })
 									</li>
 									<li class="nav-item">
 										@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link " })
@@ -188,36 +163,21 @@
 
 										@Html.ActionLink("Help", "Help", "Home", new { area = "" }, new { @class = "nav-link dropdown-toggle ", @id = "navbarDropdown", @role = "button", @data_hover = "dropdown", @aria_expanded = "false" })
 
-
-
-										<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-											<li>@Html.ActionLink("FAQ", "FAQ", "Home", new { area = "" }, new { @class = "dropdown-item" })</li>
-											<li>@Html.ActionLink("Shipping & Returns", "Shipping", "Home", new { area = "" }, new { @class = "dropdown-item" })</li>
-											<li>@Html.ActionLink("Store Policy", "StorePolicy", "Home", new { area = "" }, new { @class = "dropdown-item" })</li>
-										</ul>
+										<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+											<a>@Html.ActionLink("FAQ", "FAQ", "Home", new { area = "" }, new { @class = "dropdown-item" })</a>
+											<a>@Html.ActionLink("Shipping & Returns", "Shipping", "Home", new { area = "" }, new { @class = "dropdown-item" })</a>
+											<a>@Html.ActionLink("Store Policy", "StorePolicy", "Home", new { area = "" }, new { @class = "dropdown-item" })</a>
+											<a>@Html.ActionLink("Contact Us", "Contact", "Home", new { area = "" }, new { @class = "dropdown-item" })</a>
+										</div>
 									</li>
+
 								</ul>
-
-
-
-
 							</div>
-
-
 						</div>
-
-
-
 					</nav>
-
 				</section>
-
-
-
 			</div>
-
 		</header>
-
 	</div>
 
 
@@ -233,7 +193,7 @@
 		<!-- Grid container -->
 		<div class="container p-4">
 			<!-- Section: Social media -->
-			@*<section class="mb-4 ">
+			<section class="mb-4 ">
 					<!-- Facebook -->
 					<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
 						<i class="fab fa-facebook-f"></i>
@@ -263,10 +223,10 @@
 					<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
 						<i class="fab fa-github"></i>
 					</a>
-				</section>*@
+				</section>
 			<!-- Section: Social media -->
 			<!-- Section: Form -->
-			@*<section class="">
+			<section class="">
 					<form action="">
 						<!--Grid row-->
 						<div class="row d-flex justify-content-center">
@@ -282,7 +242,7 @@
 								<!-- Email input -->
 								<div class="form-outline form-white mb-4">
 									<input type="email" id="form5Example21" class="form-control" />
-									<label class="form-label" for="form5Example21">Email address</label>
+									@*<label class="form-label" for="form5Example21">Email address</label>*@
 								</div>
 							</div>
 							<!--Grid column-->
@@ -297,101 +257,20 @@
 						</div>
 						<!--Grid row-->
 					</form>
-				</section>*@
+				</section>
 
 			<!-- Section: Form -->
 			<!-- Section: Text -->
-			@*<section class="mb-4">
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
-						repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam
-						eum harum corrupti dicta, aliquam sequi voluptate quas.
-					</p>
-				</section>*@
+			<section class="mb-4">
+				<p>
+					Our website is available 24/7 for selling and buying products for our pet family!
+				</p>
+				</section>
 			<!-- Section: Text -->
 			<!-- Section: Links -->
 			<section>
 				<!--Grid row-->
 				<div class="row">
-					<!--Grid column-->
-					<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
-						<h5 class="text-uppercase">About</h5>
-
-						<ul class="list-unstyled mb-0">
-							<li>
-								@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-						</ul>
-					</div>
-					<!--Grid column-->
-					<!--Grid column-->
-					<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
-						<h5 class="text-uppercase">Sell</h5>
-
-						<ul class="list-unstyled mb-0">
-							<li>
-								@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-						</ul>
-					</div>
-					<!--Grid column-->
-					<!--Grid column-->
-					<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
-						<h5 class="text-uppercase">Help & Contact</h5>
-
-						<ul class="list-unstyled mb-0 ">
-							<li>
-								@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-						</ul>
-					</div>
-					<!--Grid column-->
-					<!--Grid column-->
-					<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
-						<h5 class="text-uppercase">Careers</h5>
-
-						<ul class="list-unstyled mb-0">
-							<li>
-								@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-							<li>
-								@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @class = "nav-link " })
-							</li>
-						</ul>
-					</div>
 					<!--Grid column-->
 				</div>
 				<!--Grid row-->
@@ -404,31 +283,24 @@
 			<divc class="row">
 				<small>&copy; @DateTime.Now.Year Fur Depot</small>
 			</divc>
-			<!-- 11/3/2021; Still need to move on top-->
 			<div class="row-cols-md-1 text-end ">
 				<ul class="list-inline">
 
 					<li class="list-inline-item ">
 						@Html.ActionLink("Terms of service", "Terms", "Home", new { area = "" }, new { @class = "nav-link " })
 					</li>
-
-
 					<li class="list-inline-item">
-						@Html.ActionLink("Store Policy", "StorePolicy", "Home", new { area = "" }, new { @class = "nav-link " })
+						@Html.ActionLink("Disclosure", "Disclosure", "Home", new { area = "" }, new { @class = "nav-link " })
 					</li>
-
-
-
-
-
+					<li class="list-inline-item">
+						@Html.ActionLink("Privacy Statement", "PrivacyStatement", "Home", new { area = "" }, new { @class = "nav-link " })
+					</li>
 				</ul>
 			</div>
 		</div>
 		<!-- Copyright -->
 	</footer>
 	<!-- Footer -->
-
-
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
@@ -444,11 +316,85 @@
 <!--
 
 
+
+
+		<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
+						<h5 class="text-uppercase">About</h5>
+
+						<ul class="list-unstyled mb-0">
+							<li>
+								@@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+						</ul>
+					</div>
+	<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
+						<h5 class="text-uppercase">Sell</h5>
+
+						<ul class="list-unstyled mb-0">
+							<li>
+								@@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+						</ul>
+					</div>
+
+	<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
+		<h5 class="text-uppercase">Help & Contact</h5>
+
+			<ul class="list-unstyled mb-0 ">
+				<li>
+					@@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+				</li>
+				<li>
+					@@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new {@@class = "nav-link " })
+				</li>
+				<li>
+					@@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+				</li>
+				<li>
+					@@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+				</li>
+				</ul>
+		</div>
+
+	<div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-black">
+						<h5 class="text-uppercase">Careers</h5>
+
+						<ul class="list-unstyled mb-0">
+							<li>
+								@@Html.ActionLink("Link 1", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 2", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 3", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+							<li>
+								@@Html.ActionLink("Link 4", "Index", "Home", new { area = "" }, new { @@class = "nav-link " })
+							</li>
+						</ul>
+					</div>
+
 <div class="container" text-center" style="background-color:blue;">
 	<h2>Getting started</h2>
-
-
-
 
 
 

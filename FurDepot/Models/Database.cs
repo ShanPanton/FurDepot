@@ -5,14 +5,19 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-namespace FurDepot.Models {
+namespace FurDepot.Models
+{
 
-	public class Database {
+	public class Database
+	{
 
 
 		// INSERT: User
-		public User.ActionTypes InsertUser(User u) {
+		public User.ActionTypes InsertUser(User u)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -55,7 +60,8 @@ namespace FurDepot.Models {
 
 
 		// UPDATE: User
-		public User.ActionTypes UpdateUser(User u) {
+		public User.ActionTypes UpdateUser(User u)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -93,7 +99,8 @@ namespace FurDepot.Models {
 
 
 		// LOGIN
-		public User Login(User u) {
+		public User Login(User u)
+		{
 			try {
 				SqlConnection cn = new SqlConnection();
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -137,7 +144,8 @@ namespace FurDepot.Models {
 
 
 		// GET: User Image
-		public List<Image> GetUserImage(long UserID = 0, long UserImageID = 0, bool PrimaryOnly = true) {
+		public List<Image> GetUserImage(long UserID = 0, long UserImageID = 0, bool PrimaryOnly = true)
+		{
 			try {
 				DataSet ds = new DataSet();
 				SqlConnection cn = new SqlConnection();
@@ -181,7 +189,8 @@ namespace FurDepot.Models {
 
 
 		// INSERT: User Image
-		public long InsertUserImage(User u) {
+		public long InsertUserImage(User u)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -212,7 +221,8 @@ namespace FurDepot.Models {
 
 
 		// UPDATE: User Image
-		public long UpdateUserImage(User u) {
+		public long UpdateUserImage(User u)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -243,7 +253,8 @@ namespace FurDepot.Models {
 
 
 		// DELETE: User Image
-		public bool DeleteUserImage(long UserImageID) {
+		public bool DeleteUserImage(long UserImageID)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -271,7 +282,8 @@ namespace FurDepot.Models {
 
 		/*-----------------------------------------------------*/
 		// GET: Product
-		public List<Product> GetProducts(int ProductID = 0, int UserID = 0) {
+		public List<Product> GetProducts(int ProductID = 0, int UserID = 0)
+		{
 			try {
 				DataSet ds = new DataSet();
 				SqlConnection cn = new SqlConnection();
@@ -281,8 +293,8 @@ namespace FurDepot.Models {
 
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-				if (ProductID > 0) SetParameter(ref da, "@intproductid", ProductID, SqlDbType.Int);
-				if (UserID > 0) SetParameter(ref da, "@intuserid", UserID, SqlDbType.Int);
+				if (ProductID > 0) SetParameter(ref da, "@productid", ProductID, SqlDbType.Int);
+				if (UserID > 0) SetParameter(ref da, "@useris", UserID, SqlDbType.Int);
 
 				try {
 					da.Fill(ds);
@@ -300,11 +312,6 @@ namespace FurDepot.Models {
 						p.ProductID = (int)dr["ProductID"];
 						p.ProductName = (string)dr["ProductName"];
 						p.ProductDesc = (string)dr["ProductDesc"];
-						p.ProductCost = (decimal)dr["ProductCost"];
-						
-						if (dr["PostedDate"] != null) p.DatePost = (DateTime)dr["PostedDate"];
-						if (dr["SoldDate"] != null) p.DateSold = (DateTime)dr["SoldDate"];
-
 						/*if (dr["StartDate"] != null) p.Start = (DateTime)dr["StartDate"];*/ // product published date
 																							  //if (dr["EndDate"] != null) p.End = (DateTime)dr["EndDate"]; // product sold date?
 
@@ -316,7 +323,7 @@ namespace FurDepot.Models {
 						p.User.FirstName = (string)dr["FirstName"];
 						p.User.LastName = (string)dr["LastName"];
 						p.User.Email = (string)dr["Email"];
-						
+						p.User.Phone = (string)dr["Phone"];
 
 						List<Image> images = GetImagesForProducts(p.ProductID, 0, true);
 						if (images.Count > 0) p.ProductImage = images[0];
@@ -335,7 +342,8 @@ namespace FurDepot.Models {
 
 		//Added changes to the insert of the product 
 		// INSERT: Product
-		public Product.ActionTypes InsertProduct(Product p) {
+		public Product.ActionTypes InsertProduct(Product p)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -383,23 +391,18 @@ namespace FurDepot.Models {
 
 
 		// UPDATE: Product
-		public Product.ActionTypes UpdateProduct(Product p) {
+		public Product.ActionTypes UpdateProduct(Product p)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
 				SqlCommand cm = new SqlCommand("Update_TProducts", cn);
 				int intReturnValue = -1;
 
-				SetParameter(ref cm, "@intproductid", p.ProductID, SqlDbType.Int);
-				SetParameter(ref cm, "@intuserid", p.User.UserID, SqlDbType.Int);
-				SetParameter(ref cm, "@strproduct", p.ProductName, SqlDbType.VarChar);
-				SetParameter(ref cm, "@strdescription", p.ProductDesc, SqlDbType.VarChar);
-
-
-				SetParameter(ref cm, "@monproductcost", p.ProductCost, SqlDbType.Money);
-				SetParameter(ref cm, "@dtPostedDate", p.DatePost, SqlDbType.DateTime);
-				SetParameter(ref cm, "@dtSoldDate", p.DateSold, SqlDbType.DateTime);
-
+				SetParameter(ref cm, "@productid", p.ProductID, SqlDbType.Int);
+				SetParameter(ref cm, "@userid", p.User.UserID, SqlDbType.Int);
+				SetParameter(ref cm, "@productname", p.ProductName, SqlDbType.VarChar);
+				SetParameter(ref cm, "@productdesc", p.ProductDesc, SqlDbType.VarChar);
 				/*SetParameter(ref cm, "@start", p.Start, SqlDbType.DateTime);*/ // published date
 																				 /*SetParameter(ref cm, "@end", p.End, SqlDbType.DateTime);*/ // sold date?
 
@@ -430,14 +433,15 @@ namespace FurDepot.Models {
 
 
 		// DELETE: Product
-		public bool DeleteProduct(int ProductID) {
+		public bool DeleteProduct(int ProductID)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
 				SqlCommand cm = new SqlCommand("Delete_TProducts", cn);
 				int intReturnValue = -1;
 
-				SetParameter(ref cm, "@intproductid", ProductID, SqlDbType.Int);
+				SetParameter(ref cm, "@productid", ProductID, SqlDbType.Int);
 				SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
 				cm.ExecuteReader();
@@ -456,7 +460,8 @@ namespace FurDepot.Models {
 
 
 		// GET: Product Ratings
-		public List<Rating> GetProductRatings(int UserID) {
+		public List<Rating> GetProductRatings(int UserID)
+		{
 			try {
 				DataSet ds = new DataSet();
 				SqlConnection cn = new SqlConnection();
@@ -499,7 +504,8 @@ namespace FurDepot.Models {
 
 
 		//UPDATE: Product Ratings
-		public int RateProduct(int UserID, int ProductID, int intRating) {
+		public int RateProduct(int UserID, int ProductID, int intRating)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -527,97 +533,59 @@ namespace FurDepot.Models {
 			}
 		}
 
-	
-		public List<Product> GetActiveProducts() {
-			try {
-				DataSet ds = new DataSet();
-				SqlConnection cn = new SqlConnection();
-				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-				SqlDataAdapter da = new SqlDataAdapter("Select_TProducts_Active", cn);
-				List<Product> products = new List<Product>();
 
-				da.SelectCommand.CommandType = CommandType.StoredProcedure;
-
+		/*
+			public List<Product> GetActiveProducts() {
 				try {
-					da.Fill(ds);
-				}
-				catch (Exception ex2) {
-					throw new Exception(ex2.Message);
-				}
-				finally { CloseDBConnection(ref cn); }
+					DataSet ds = new DataSet();
+					SqlConnection cn = new SqlConnection();
+					if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+					SqlDataAdapter da = new SqlDataAdapter("Select_TProducts_Active", cn);
+					List<Product> products = new List<Product>();
 
-				if (ds.Tables[0].Rows.Count != 0) {
-					foreach (DataRow dr in ds.Tables[0].Rows) {
-						Product p = new Product();
-						p.ProductID = (int)dr["ProductID"];
-						p.ProductName = (string)dr["ProductName"];
-						p.ProductDesc = (string)dr["ProductDesc"];
-						p.ProductCost = (decimal)dr["ProductCost"];
-						//if (dr["StartDate"] != null) p.Start = (DateTime)dr["StartDate"]; // product published date?
-						//if (dr["EndDate"] != null) p.End = (DateTime)dr["EndDate"]; // product sold date?
+					da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-						if (dr["IsActive"].ToString() == "N") p.IsActive = false;
-
-						p.User = new User();
-						p.User.UserID = (int)dr["UserID"];
-						p.User.FirstName = (string)dr["FirstName"];
-						p.User.LastName = (string)dr["LastName"];
-
-						List<Image> images = GetImagesForProducts(p.ProductID, 0, true);
-						if (images.Count > 0) p.ProductImage = images[0];
-
-						products.Add(p);
+					try {
+						da.Fill(ds);
 					}
+					catch (Exception ex2) {
+						//SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+					}
+					finally { CloseDBConnection(ref cn); }
+
+					if (ds.Tables[0].Rows.Count != 0) {
+						foreach (DataRow dr in ds.Tables[0].Rows) {
+							Product p = new Product();
+							p.ProductID = (int)dr["ProductID"];
+							p.ProductName = (string)dr["ProductName"];
+							p.ProductDesc = (string)dr["ProductDesc"];
+							//if (dr["StartDate"] != null) p.Start = (DateTime)dr["StartDate"]; // product published date?
+							//if (dr["EndDate"] != null) p.End = (DateTime)dr["EndDate"]; // product sold date?
+
+							if (dr["IsActive"].ToString() == "N") p.IsActive = false;
+							p.AverageRating = (int)dr["AvgRating"];
+
+							p.User = new User();
+							p.User.UserID = (int)dr["UserID"];
+							p.User.FirstName = (string)dr["FirstName"];
+							p.User.LastName = (string)dr["LastName"];
+
+							List<Image> images = GetImagesForProducts(p.ProductID, 0, true);
+							if (images.Count > 0) p.ProductImage = images[0];
+
+							products.Add(p);
+						}
+					}
+					return products;
 				}
-				return products;
+				catch (Exception ex) { throw new Exception(ex.Message); }
 			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
-		}
-		public Product GetProductDetails(int productId) {
-			try {
-				DataSet ds = new DataSet();
-				SqlConnection cn = new SqlConnection();
-				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-				SqlDataAdapter da = new SqlDataAdapter("Select_TProducts_Details", cn);
-				da.SelectCommand.Parameters.Add("@intinputproductid", SqlDbType.Int).Value = productId;
-				Product product = new Product();
+			*/
 
-				da.SelectCommand.CommandType = CommandType.StoredProcedure;
-
-				try {
-					da.Fill(ds);
-				}
-				catch (Exception ex2) {
-					throw new Exception(ex2.Message);
-				}
-				finally { CloseDBConnection(ref cn); }
-
-				if (ds.Tables[0].Rows.Count != 0) {
-					DataRow dr = ds.Tables[0].Rows[0];
-					product.ProductID = (int)dr["ProductID"];
-					product.ProductName = (string)dr["ProductName"];
-					product.ProductDesc = (string)dr["ProductDesc"];
-					product.ProductCost = (decimal)dr["ProductCost"];
-					//if (dr["StartDate"] != null) p.Start = (DateTime)dr["StartDate"]; // product published date?
-					//if (dr["EndDate"] != null) p.End = (DateTime)dr["EndDate"]; // product sold date?
-
-					if (dr["IsActive"].ToString() == "N") product.IsActive = false;
-
-					product.User = new User();
-					product.User.UserID = (int)dr["UserID"];
-					product.User.FirstName = (string)dr["FirstName"];
-					product.User.LastName = (string)dr["LastName"];
-
-					List<Image> images = GetImagesForProducts(product.ProductID, 0, true);
-					if (images.Count > 0) product.ProductImage = images[0];
-				}
-				return product;
-			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
-		}
 
 		// GET: Product Images
-		public List<Image> GetImagesForProducts(int ProductID = 0, long ProductImageID = 0, bool PrimaryOnly = false) {
+		public List<Image> GetImagesForProducts(int ProductID = 0, int ProductImageID = 0, bool PrimaryOnly = false)
+		{
 			try {
 				DataSet ds = new DataSet();
 				SqlConnection cn = new SqlConnection();
@@ -628,7 +596,7 @@ namespace FurDepot.Models {
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
 				if (ProductID > 0) SetParameter(ref da, "@productid", ProductID, SqlDbType.Int);
-				if (ProductImageID > 0) SetParameter(ref da, "@productimageid", ProductImageID, SqlDbType.BigInt);
+				if (ProductImageID > 0) SetParameter(ref da, "@productimageid", ProductImageID, SqlDbType.Int);
 				if (PrimaryOnly) SetParameter(ref da, "@primary_only", "Y", SqlDbType.Char);
 
 				try {
@@ -664,26 +632,27 @@ namespace FurDepot.Models {
 
 
 		// INSERT: Product Image
-		public long InsertProductImage(Product p) {
+		public int InsertProductImage(Product p)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
 				SqlCommand cm = new SqlCommand("Insert_TProduct_Images", cn);
 
-				SetParameter(ref cm, "@productimageid", null, SqlDbType.BigInt, Direction: ParameterDirection.Output);
+				SetParameter(ref cm, "@productimageid", null, SqlDbType.Int, Direction: ParameterDirection.Output);
 				SetParameter(ref cm, "@productid", p.ProductID, SqlDbType.Int);
 				if (p.ProductImage.Primary)
-					SetParameter(ref cm, "@primaryimage", "Y", SqlDbType.Char);
+					SetParameter(ref cm, "@primary_image", "Y", SqlDbType.Char);
 				else
-					SetParameter(ref cm, "@primaryimage", "N", SqlDbType.Char);
+					SetParameter(ref cm, "@primary_image", "N", SqlDbType.Char);
 
 				SetParameter(ref cm, "@image", p.ProductImage.ImageData, SqlDbType.VarBinary);
-				SetParameter(ref cm, "@filename", p.ProductImage.FileName, SqlDbType.VarChar);
-				SetParameter(ref cm, "@imagesize", p.ProductImage.ImageSize, SqlDbType.BigInt);
+				SetParameter(ref cm, "@file_name", p.ProductImage.FileName, SqlDbType.VarChar);
+				SetParameter(ref cm, "@image_size", p.ProductImage.ImageSize, SqlDbType.Int);
 
 				cm.ExecuteReader();
 				CloseDBConnection(ref cn);
-				return (long)cm.Parameters["@productimageid"].Value;
+				return (int)cm.Parameters["@productimageid"].Value;
 			}
 			catch (Exception ex) {
 				throw new Exception(ex.Message);
@@ -692,7 +661,8 @@ namespace FurDepot.Models {
 
 
 		// UPDATE: Product Image
-		public long UpdateProductImage(Product p) {
+		public long UpdateProductImage(Product p)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -700,12 +670,12 @@ namespace FurDepot.Models {
 
 				SetParameter(ref cm, "@productimageid", p.ProductImage.ImageID, SqlDbType.Int);
 				if (p.ProductImage.Primary)
-					SetParameter(ref cm, "@primaryimage", "Y", SqlDbType.Char);
+					SetParameter(ref cm, "@primary_image", "Y", SqlDbType.Char);
 				else
-					SetParameter(ref cm, "@primaryimage", "N", SqlDbType.Char);
+					SetParameter(ref cm, "@primary_image", "N", SqlDbType.Char);
 
 				SetParameter(ref cm, "@image", p.ProductImage.ImageData, SqlDbType.VarBinary);
-				SetParameter(ref cm, "@filename", p.ProductImage.FileName, SqlDbType.VarChar);
+				SetParameter(ref cm, "@strfilename", p.ProductImage.FileName, SqlDbType.VarChar);
 				SetParameter(ref cm, "@imagesize", p.ProductImage.ImageSize, SqlDbType.Int);
 
 				cm.ExecuteReader();
@@ -717,12 +687,19 @@ namespace FurDepot.Models {
 				throw new Exception(ex.Message);
 			}
 		}
-		
-	
+
+		//Update_Product_Image
+		//Need To be created all of them - store procedure
+		//Delete_Product_Image
+
+		//Select_Product_Image
+
+		//Insert_Product_Image
 
 
 		// DELETE: Product Image
-		public bool DeleteProductImage(int ProductID) {
+		public bool DeleteProductImage(int ProductID)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -750,7 +727,8 @@ namespace FurDepot.Models {
 
 
 		// GET: Incident
-		public List<Incident> GetIncidents(int IncidentID = 0, string OwnerUserName = null) {
+		public List<Incident> GetIncidents(int IncidentID = 0, string OwnerUserName = null)
+		{
 			try {
 				DataSet ds = new DataSet();
 				SqlConnection cn = new SqlConnection();
@@ -775,10 +753,10 @@ namespace FurDepot.Models {
 						Incident i = new Incident();
 						i.IncidentID = (int)dr["IncidentID"];
 						i.OwnerUserName = (string)dr["UserName"];
-						i.FirstName = (string)dr["First Name"];
-						i.LastName = (string)dr["Last Name"];
-						i.IncidentTitle = (string)dr["Incident Title"];
-						i.IncidentDesc = (string)dr["Incident Description"];
+						i.FirstName = (string)dr["FirstName"];
+						i.LastName = (string)dr["LastName"];
+						i.IncidentTitle = (string)dr["IncidentTitle"];
+						i.IncidentDesc = (string)dr["IncidentDesc"];
 						i.UserName = (string)dr["UserName"];
 
 
@@ -786,7 +764,7 @@ namespace FurDepot.Models {
 						i.User.UserName = (string)dr["UserName"];
 						i.User.FirstName = (string)dr["FirstName"];
 						i.User.LastName = (string)dr["LastName"];
-						i.User.Email = (string)dr["Email"];
+						//i.User.Email = (string)dr["Email"];
 
 						incident.Add(i);
 					}
@@ -800,7 +778,8 @@ namespace FurDepot.Models {
 
 
 		// INSERT: Incident
-		public Incident.ActionTypes InsertIncident(Incident i) {
+		public Incident.ActionTypes InsertIncident(Incident i)
+		{
 			try {
 				SqlConnection cn = null;
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
@@ -835,8 +814,10 @@ namespace FurDepot.Models {
 		}
 
 
+
 		// GET: SQL Connection
-		private bool GetDBConnection(ref SqlConnection SQLConn) {
+		private bool GetDBConnection(ref SqlConnection SQLConn)
+		{
 			try {
 				if (SQLConn == null) SQLConn = new SqlConnection();
 				if (SQLConn.State != ConnectionState.Open) {
@@ -851,7 +832,8 @@ namespace FurDepot.Models {
 
 
 		// CLOSE: SQL Connection
-		private bool CloseDBConnection(ref SqlConnection SQLConn) {
+		private bool CloseDBConnection(ref SqlConnection SQLConn)
+		{
 			try {
 				if (SQLConn.State != ConnectionState.Closed) {
 					SQLConn.Close();
@@ -871,7 +853,8 @@ namespace FurDepot.Models {
 		private int SetParameter(ref SqlCommand cm, string ParameterName, Object Value
 			, SqlDbType ParameterType, int FieldSize = -1
 			, ParameterDirection Direction = ParameterDirection.Input
-			, Byte Precision = 0, Byte Scale = 0) {
+			, Byte Precision = 0, Byte Scale = 0)
+		{
 			try {
 				cm.CommandType = CommandType.StoredProcedure;
 				if (FieldSize == -1)
@@ -897,7 +880,8 @@ namespace FurDepot.Models {
 		private int SetParameter(ref SqlDataAdapter cm, string ParameterName, Object Value
 			, SqlDbType ParameterType, int FieldSize = -1
 			, ParameterDirection Direction = ParameterDirection.Input
-			, Byte Precision = 0, Byte Scale = 0) {
+			, Byte Precision = 0, Byte Scale = 0)
+		{
 			try {
 				cm.SelectCommand.CommandType = CommandType.StoredProcedure;
 				if (FieldSize == -1)

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Web;
 
 
-namespace FurDepot.Models {
-	public class Incident {
+namespace FurDepot.Models
+{
+	public class Incident
+	{
 
 		public int IncidentID = 0;
 		public string OwnerUserName = null;
@@ -21,8 +23,19 @@ namespace FurDepot.Models {
 		public ActionTypes ActionType = ActionTypes.RequiredFieldsMissing;
 
 
+		// User logged in or not by boolean
+		public bool IsAuthenticated
+		{
+			get {
+				if (OwnerUserName == null) return true;
+				return false;
+			}
+		}
+
+
 		// Save Incident
-		public Incident.ActionTypes Save() {
+		public Incident.ActionTypes Save()
+		{
 			try {
 				Database db = new Database();
 
@@ -33,12 +46,13 @@ namespace FurDepot.Models {
 			}
 			catch (Exception ex) {
 				throw new Exception(ex.Message);
-			}
+			}		
 		}
 
 		// Added 11.6.2021 Mai
 		// Get Incident
-		public Incident GetIncident(int IncidentID) {
+		public Incident GetIncident(int IncidentID)
+		{
 			try {
 				Database db = new Database();
 				List<Incident> incidents = new List<Incident>();
@@ -65,7 +79,8 @@ namespace FurDepot.Models {
 		//}
 
 
-		public enum ActionTypes {
+		public enum ActionTypes
+		{
 			NoType = 0,
 			InsertSuccessful = 1,
 			UpdateSuccessful = 2,

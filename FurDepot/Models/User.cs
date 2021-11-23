@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace FurDepot.Models {
-	public class User {
+namespace FurDepot.Models
+{
+	public class User
+	{
 		public int UserID = 0;
 		public string FirstName = string.Empty;
 		public string LastName = string.Empty;
@@ -23,7 +25,7 @@ namespace FurDepot.Models {
 
 
 		// User logged in or not by boolean
-		public bool IsAuthenticated {
+		public bool IsAuthenticated{
 			get {
 				if (UserID > 0) return true;
 				return false;
@@ -33,32 +35,40 @@ namespace FurDepot.Models {
 
 
 		// LOGIN
-		public User Login() {
-			try {
+		public User Login()
+		{
+			try 
+			{
 				Database db = new Database();
 				return db.Login(this);
 			}
-			catch (Exception ex) {
-				throw new Exception(ex.Message);
+			catch (Exception ex) 
+			{
+				throw new Exception (ex.Message);
 			}
 		}
 
 
 
 		// SAVE: Users
-		public User.ActionTypes Save() {
-			try {
+		public User.ActionTypes Save()
+		{
+			try 
+			{
 				Database db = new Database();
 
-				if (UserID == 0) { //insert new user
+				if (UserID == 0) 
+				{ //insert new user
 					this.ActionType = db.InsertUser(this);
 				}
-				else {
+				else 
+				{
 					this.ActionType = db.UpdateUser(this);
 				}
 				return this.ActionType;
 			}
-			catch (Exception ex) {
+			catch (Exception ex) 
+			{
 				throw new Exception(ex.Message);
 			}
 		}
@@ -66,7 +76,8 @@ namespace FurDepot.Models {
 
 
 		// GET: Product
-		public List<Product> GetProducts(int ProductID = 0) {
+		public List<Product> GetProducts(int ProductID = 0)
+		{
 			try {
 				Database db = new Database();
 				return db.GetProducts(ProductID, this.UserID);
@@ -76,7 +87,8 @@ namespace FurDepot.Models {
 
 
 		// GET: Product Rating
-		public byte GetUserRating(Rating.Types RatingType, int ProductID) {
+		public byte GetUserRating(Rating.Types RatingType, int ProductID)
+		{
 			try {
 				foreach (Rating r in this.Ratings) {
 					if (r.Type == RatingType && r.ProductID == ProductID) return r.intRating;
@@ -89,13 +101,16 @@ namespace FurDepot.Models {
 
 
 		// ADD: Images
-		public sbyte AddGalleryImage(HttpPostedFileBase f) {
-			try {
+		public sbyte AddGalleryImage(HttpPostedFileBase f)
+		{
+			try 
+			{
 				this.UserImage = new Image();
 				this.UserImage.Primary = false;
 				this.UserImage.FileName = Path.GetFileName(f.FileName);
 
-				if (this.UserImage.IsImageFile()) {
+				if (this.UserImage.IsImageFile()) 
+				{
 					this.UserImage.ImageSize = f.ContentLength;
 					Stream stream = f.InputStream;
 					BinaryReader binaryReader = new BinaryReader(stream);
@@ -104,24 +119,29 @@ namespace FurDepot.Models {
 				}
 				return 0;
 			}
-			catch (Exception ex) {
+			catch (Exception ex) 
+			{
 				throw new Exception(ex.Message);
 			}
 		}
 
 
 		// UPDATE: Primary Image = which User will only have one image so the image would be "Primary Image"
-		public sbyte UpdatePrimaryImage() {
-			try {
+		public sbyte UpdatePrimaryImage()
+		{
+			try 
+			{
 				Models.Database db = new Database();
 				long NewUserID;
 
-				if (this.UserImage.ImageID == 0) {
+				if (this.UserImage.ImageID == 0) 
+				{
 					NewUserID = db.InsertUserImage(this);
 
 					if (NewUserID > 0) UserImage.ImageID = NewUserID;
 				}
-				else {
+				else 
+				{
 					db.UpdateUserImage(this);
 				}
 				return 0;
@@ -132,35 +152,40 @@ namespace FurDepot.Models {
 
 
 		// GET: User Information for Incident
-		public List<Incident> GetIncidents(int IncidentID = 0) {
+		public List<Incident> GetIncidents(int IncidentID = 0){
 			try {
 				Database db = new Database();
 				Models.Incident i = new Models.Incident();
 
 				return db.GetIncidents(IncidentID, i.OwnerUserName);
 			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
+			catch (Exception ex) { throw new Exception(ex.Message);  }
 		}
-
+		
 
 		// GET: User Session
-		public User GetUserSession() {
-			try {
+		public User GetUserSession()
+		{
+			try 
+			{
 				User u = new User();
-				if (HttpContext.Current.Session["CurrentUser"] == null) {
+				if (HttpContext.Current.Session["CurrentUser"] == null) 
+				{
 					return u;
 				}
 				u = (User)HttpContext.Current.Session["CurrentUser"];
 				return u;
 			}
-			catch (Exception ex) {
+			catch (Exception ex) 
+			{
 				throw new Exception(ex.Message);
 			}
 		}
 
 
 		// SAVE: User Session
-		public bool SaveUserSession() {
+		public bool SaveUserSession()
+		{
 			try {
 				HttpContext.Current.Session["CurrentUser"] = this;
 				return true;
@@ -170,7 +195,8 @@ namespace FurDepot.Models {
 
 
 		// REMOVE: User Session
-		public bool RemoveUserSession() {
+		public bool RemoveUserSession()
+		{
 			try {
 				HttpContext.Current.Session["CurrentUser"] = null;
 				return true;
@@ -181,7 +207,8 @@ namespace FurDepot.Models {
 		}
 
 		// enumuration
-		public enum ActionTypes {
+		public enum ActionTypes
+		{
 			NoType = 0,
 			InsertSuccessful = 1,
 			UpdateSuccessful = 2,

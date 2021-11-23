@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace FurDepot.Models {
-	public class Product {
+namespace FurDepot.Models
+{
+	public class Product
+	{
 		public int ProductID = 0;
 		public string ProductName = string.Empty;
 		public string ProductDesc = string.Empty;
@@ -26,7 +28,8 @@ namespace FurDepot.Models {
 		public bool IsActive = true;
 		public int AverageRating = 0;
 
-		public Image PrimaryImage {
+		public Image PrimaryImage
+		{
 			get {
 				if (this.Images != null) {
 					foreach (Image i in this.Images) {
@@ -36,18 +39,18 @@ namespace FurDepot.Models {
 				return new Image();
 			}
 		}
-		//Maybe this affect the post date
-		public bool Editable {
-			get {
-				if (this.DatePost == null) return true;
-				if(this.DatePost > DateTime.Now)  return true;
-				return false;
-			}
 
-			
-		}
+		//public bool Editable
+		//{
+		//	get {
+		//		if (this.Start == null) return true;
+		//		if (this.Start > DateTime.Now) return true;
+		//		return false;
+		//	}
+		//}
 
-		public Product GetProduct(int ProductID) {
+		public Product GetProduct(int ProductID)
+		{
 			try {
 				Database db = new Database();
 				List<Product> products = new List<Product>();
@@ -63,7 +66,8 @@ namespace FurDepot.Models {
 		}
 
 
-		public Product.ActionTypes Save() {
+		public Product.ActionTypes Save()
+		{
 			try {
 				Database db = new Database();
 				if (ProductID == 0) //insert new user
@@ -79,7 +83,8 @@ namespace FurDepot.Models {
 		}
 
 
-		public sbyte AddProductImage(HttpPostedFileBase f) {
+		public sbyte AddProductImage(HttpPostedFileBase f)
+		{
 			try {
 				this.ProductImage = new Image();
 				this.ProductImage.Primary = false;
@@ -99,10 +104,11 @@ namespace FurDepot.Models {
 		}
 
 
-		public sbyte UpdatePrimaryImage() {
+		public sbyte UpdatePrimaryImage()
+		{
 			try {
 				Database db = new Database();
-				long NewintProductID;
+				int NewintProductID;
 				if (this.ProductImage.ImageID == 0) {
 					NewintProductID = db.InsertProductImage(this);
 					if (NewintProductID > 0) ProductImage.ImageID = NewintProductID;
@@ -115,7 +121,8 @@ namespace FurDepot.Models {
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
-		public enum ActionTypes {
+		public enum ActionTypes
+		{
 			NoType = 0,
 			InsertSuccessful = 1,
 			UpdateSuccessful = 2,
